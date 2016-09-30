@@ -1,0 +1,21 @@
+<div>
+  <div *ngIf="loginService.isLogin()">
+    <div>Welcome {{(loginService.info | async)?.nickname}}</div>
+    <button (click)="logout()" class="btn btn-inverse">Log Out</button>
+
+  </div>
+  <div *ngIf="!loginService.isLogin()">
+    <div class="row">
+      <div class="col-md-6">
+        <button (click)="login()" class="btn btn-primary">Google Login</button>
+      </div>
+      <div class="col-md-6">
+          <input type="email" [(ngModel)]="email"><br/>
+          <input type="password" [(ngModel)]="password"><br/>
+          <button (click)="passwordLogin()" class="btn btn-primary">Password Login</button><br/>
+          <button (click)="signup()" class="btn btn-primary">Sign Up</button>
+      </div>
+    </div>
+
+  </div>
+</div>

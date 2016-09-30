@@ -1,0 +1,8 @@
+<ul class="nav navbar-nav navbar-right">
+  <li class='dropdown'><a class="notifications" (click)="toggle()"><span class="n-{{notifications.length}}">{{notifications.length}}</span></a>
+    <ul class="dropdown-menu" *ngIf="isShow">
+      <li><a routerLink="{{item.href}}" (click)="read(item)" *ngFor="let item of (notifications  )" >{{item.getMessage()}}</a></li>
+    </ul>
+  </li>
+  
+</ul>

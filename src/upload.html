@@ -1,0 +1,120 @@
+<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  // TODO: Replace with your project's customized code snippet
+  var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  } 
+  return query_string;
+}();
+
+  var config = {
+     apiKey: "AIzaSyCf9phOV3kk6HBiskayFjZ_4h8gFFgIQew",
+    authDomain: "the-hop-firebase.firebaseapp.com",
+    databaseURL: "https://the-hop-firebase.firebaseio.com",
+    storageBucket: "the-hop-firebase.appspot.com"
+  };
+  firebase.initializeApp(config);
+  var storage = firebase.storage();
+
+
+  function uploadFile(file){
+        var storageRef = firebase.storage().ref();
+        // Create the file metadata
+        var metadata = {
+        contentType: 'image/jpeg'
+        };
+
+        var root_img = 'images/'
+        if(QueryString.url)
+            root_img = QueryString.url
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        var uploadTask;
+        if( QueryString.file_name )
+            uploadTask = storageRef.child(root_img + QueryString.file_name).put(file, metadata);
+        else
+            uploadTask = storageRef.child(root_img + file.name).put(file, metadata);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            if(progress == 100)
+            {
+                //console.log(snapshot)
+                
+                localStorage['_image_upload_status'] = "complete"
+                localStorage['_image_upload_data'] = JSON.stringify({
+                    "name":snapshot.a.name,
+                    "downloadUrl":snapshot.a.downloadURLs,
+                    "fullPath":snapshot.a.fullPath,
+                    "size":snapshot.a.size
+                })
+                    
+                
+            }
+            switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                console.log('Upload is paused');
+                break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+                console.log('Upload is running');
+                break;
+            }
+        }, function(error) {
+        switch (error.code) {
+            case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+
+            case 'storage/canceled':
+            // User canceled the upload
+            break;
+
+            case 'storage/unknown':
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+        }, function() {
+        // Upload completed successfully, now we can get the download URL
+        var downloadURL = uploadTask.snapshot.downloadURL;
+        window.close();
+        });
+  }
+
+  function upload()
+  {
+      var selectedFile = document.getElementById('input').files[0];
+
+      uploadFile(selectedFile)
+  }
+
+  function testPath()
+  {
+      console.log(QueryString.url)
+  }
+
+</script>
+<section>
+    <div>Selected File <input type="file" id="input"></div>
+    <div><button onclick="upload()" >Upload Now</button></div>
+</section>

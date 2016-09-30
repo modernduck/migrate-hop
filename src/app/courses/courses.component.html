@@ -1,0 +1,37 @@
+<h2>Available Courses</h2> 
+<table class="table table-striped">
+    <thead>
+      <th>Name</th>
+      <th>Day(s)</th>
+      <th>Time</th>
+      <th>Start</th>
+      <th>End</th>
+      <th></th>
+    </thead>
+    <tbody>
+       <tr *ngFor="let c of courses  | filterByAttribute:'public':true">
+          <td>{{c.name}} <span class="code">{{c.code}}</span> <a routerLink="edit/{{c.$key}}">EDIT</a>
+            <div>
+              Require: 
+              <ul>
+                <li *ngFor="let requireGroup of c.require | objectTrue2Array">{{ requireGroup |json }}</li>
+              </ul>
+            </div>
+            <div>
+              Exclude:
+              <ul>
+                <li *ngFor="let excludeGroup of c.exclude | objectTrue2Array">{{ excludeGroup.$key |json }}</li>
+              </ul>
+            </div>
+            <div>
+              By <courses-teacher [teacher]="c.teacher"></courses-teacher> .
+            </div>
+          </td>
+          <td><courses-day [daysNumber]="c.days"></courses-day> </td>
+          <td>{{c.start_time}} - {{c.end_time}}</td>
+          <td>{{c.start_date | date}}</td>
+          <td>{{c.end_date | date}}</td>
+          <td><courses-signup [course]="c" [enroll]="enroll_course" ></courses-signup></td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,26 @@
+.courses-day li, .courses-day-form li
+{
+    list-style: none;
+}
+
+span.code
+{
+    padding:5px;
+    background: #999
+}
+
+.teacher-name
+{
+    font-weight: bold;
+}
+
+.courses-form .row
+{
+    margin-bottom: 10px;
+}
+
+.courses-day-form ul
+{
+    display:inline
+}
+

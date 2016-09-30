@@ -1,0 +1,35 @@
+<section class="checkout-component">
+  <h2>Review your order</h2>
+    <div class="well" *ngIf="cartService.isEmpty()">
+      Your cart is empty .
+      
+    </div>
+      
+        <table class="table table-striped" *ngIf="!cartService.isEmpty()" >
+            <thead> 
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Option</th>
+                <th></th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of cart">
+                <td>{{item.name}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.reference}}</td>
+                <td><a class="remove" (click)="remove(item)">X</a></td>
+              </tr>
+              
+            </tbody>
+
+        </table>
+      <div  >
+        <a routerLink="/courses" class='pull-left btn btn-primary'>Back to Courses</a>
+        <a routerLink="/payment/new" class='pull-right btn btn-success' *ngIf="!cartService.isEmpty()"> Process Order</a>
+      </div>
+  </section>

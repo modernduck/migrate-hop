@@ -1,0 +1,25 @@
+<p>
+  My current payments
+
+</p>
+<table class="table table-striped">
+    <thead>
+      <th>#</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Transfer Date</th>
+      <th>Transfer Time</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of payments">
+        <td>{{item.$key}}</td>
+        <td>{{item.payment_type}}</td>
+        <td>{{item.total}}</td>
+        <td>{{item.status}}</td>
+        <td>{{item.transfer_date | date}}</td>
+        <td>{{item.transfer_time }}</td>
+
+      </tr>
+    </tbody>
+</table>

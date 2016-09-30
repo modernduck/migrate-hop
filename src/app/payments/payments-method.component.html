@@ -1,0 +1,42 @@
+<h2>Checkout</h2>
+<table class="table table-striped" *ngIf="!cartService.isEmpty()" >
+            <thead> 
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Option</th>
+                <th>Total</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of cart">
+                <td>{{item.name}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.reference}}</td>
+                <td>{{item.total}}</td>
+              </tr>
+              <tr>
+                  <td colspan="4">Total</td>
+                  <td>{{cartService.getTotal()}}</td>
+            </tr>
+            </tbody>
+
+</table>
+<h3>Select Payment Method</h3>
+
+<div class="payment-method {{type.style}} active-{{type.active}}" *ngFor="let type of (payment_types ) "  >
+    
+    <h5>{{type.name}}</h5>
+    <p>{{cartService.getTotal() + ( cartService.getTotal() * type.fee.percentage / 100  ) + type.fee.constant}}</p>
+    <p class="small">({{type.fee.percentage}} % + {{type.fee.constant}} ) </p>
+    <div class='center '>
+        <button (click)="select(type)" class="btn btn-primary {{type.btn_style}}">SELECT</button>
+    </div>
+</div>
+<div class="nav-bot">
+    <a class='pull-left btn btn-primary' routerLink="/checkout">Back to Cart</a>
+    <a routerLink="/payment/{{selectedPaymentType}}" *ngIf="selectedPaymentType" class='pull-right btn btn-success'>Comfirm Payment</a>
+</div>

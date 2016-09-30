@@ -1,0 +1,27 @@
+div.payment-method{
+    display: inline-block;
+    padding:10px;
+    border:1px solid #999;
+    margin-right:2px;
+    width:250px;
+    min-height:150px;
+    
+}
+
+div.payment-method button{
+    width:100%
+}
+
+div.payment-method.selected{
+    border:5px solid #337ab7
+}
+
+div.payment-method.active-false
+{
+    display:none;
+}
+
+div.nav-bot
+{
+    margin-top:10px;
+}

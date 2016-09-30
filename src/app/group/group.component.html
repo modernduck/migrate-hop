@@ -1,0 +1,12 @@
+<p>
+  All Group <a routerLink="./new" class="btn btn-primary">Add</a>
+</p>
+<div *ngIf="groups | async">
+  <ul>
+    <li *ngFor="let item of groups | async">
+      <a routerLink="./{{item.$key}}">{{ item.name }} ( {{item.members_count}} ) 
+      
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,12 @@
+<a routerLink="update">Edit</a>
+<div *ngIf="!(lg.currentUser | async)" class="profile">
+  No info please Login
+</div>
+<div *ngIf="(lg.currentUser | async)" class="profile">
+Full Name : {{(lg.currentUser| async)?.fullname}}<br/>
+Nickname: {{(lg.currentUser| async)?.nickname}}<br/>
+Email : {{(lg.currentUser| async)?.email}}<br/>
+<img src="{{(lg.currentUser | async).picture}}"/>
+
+
+</div>

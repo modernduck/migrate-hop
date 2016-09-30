@@ -1,0 +1,48 @@
+<div *ngIf="!showFinder">
+  
+    <p>
+      Select Course for check in on <b>{{key_date | date}}</b>  
+    </p>
+    
+    <table class="table">
+      <tr *ngFor="let item of avaialable_course;let i = index;">
+          <td (click)="chooseCourse(i)">{{courseService.getInfoFromKey(item.$key).code}}</td>
+        </tr>
+
+      </table>
+</div>
+<div *ngIf="showFinder && active_course_index >=0 && !showWalkin">
+    <div>
+      <button (click)="showFinder=false" class="btn btn-primary pull-left">Change Class</button>
+      <button (click)="createWalkInUser()" class="btn btn-primary pull-right">Create Walk In User</button>
+      <button (click)="showWalkin = true;_show_add_user=true" class="btn btn-primary pull-right">Add User</button>
+    </div>
+    <div style="clear:both;">
+      Course <b>{{courseService.getInfoFromKey(avaialable_course[active_course_index].$key).code}}</b> Enroll user on <b>{{key_date | date}}</b>
+    </div>
+    <users-finder [scope]="scope_course" (onSelected)="select($event)"></users-finder>
+  </div>
+
+<div *ngIf="showWalkin">
+  <div>
+          <button (click)="showWalkin=false" class="btn btn-primary">Back</button>
+        </div>
+    Add User from the system to <b>{{courseService.getInfoFromKey(avaialable_course[active_course_index].$key).code}}</b>
+    <div *ngIf="add_user">
+        <div>
+          <button (click)="_show_add_user=true;add_user=false" class="btn btn-primary">Back</button>
+        </div>
+        Going to add <b>{{add_user.email}}({{add_user.nickname}})</b> as 
+          <select [(ngModel)]="add_user.reference">
+              <option value="lead">Lead</option>
+              <option value="follow">Follow</option>
+          </select>
+
+        
+        <div *ngIf="add_user.reference">
+          with <button (click)="promptAmount(add_user)" class="btn btn-primary">Cash Payment</button> or <button (click)="noPaymentAdd(add_user)" class="btn btn-default">No Payment</button>
+        </div>
+
+      </div> 
+      <users-finder [display]="_show_add_user" (onSelected)="addUser($event)"></users-finder>
+  </div>

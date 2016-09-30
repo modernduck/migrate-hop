@@ -1,0 +1,28 @@
+<a class="btn btn-lg" routerLink=".."> Back</a>
+    <div *ngIf="group">
+        
+        <input [(ngModel)]="group.name" class="form-control" />
+        <div>
+            Slug (use for search) : {{group.$key}} 
+        </div>
+        <section  *ngIf="!isNew">
+            Members 
+            
+            <ul >    
+                <li *ngFor="let m of members">
+                    
+                    {{m.$value}} <button class="btn btn-danger" (click)="removeUser(m.$key)">X</button>
+                    
+                </li>
+                <li><a (click)="isAddUser=true">Add Member</a></li>
+            </ul>
+            <div *ngIf="isAddUser">
+                <button (click)="isAddUser=false" class='btn btn-danger pull-right'>X</button>
+            </div>
+            <users-finder [display]="isAddUser" (onSelected)="onSelectedUser($event)" ></users-finder>
+        </section>
+        <div>
+            <button (click)="save()" class='btn btn-primary'>Save</button>
+            <button *ngIf="!isNew" (click)="delete()" class='btn btn-danger'>DELETE</button>
+        </div>
+    </div>

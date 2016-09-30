@@ -1,0 +1,26 @@
+<a routerLink="..">Back</a>
+<div *ngIf="(lg.currentUser | async)" class="profile">
+    <div class="form">
+        <div class="row">
+            <div class="col-md-4">Full Name</div>
+            <div class="col-md-8"><input type="text" class="form-control" [(ngModel)]="fullname"  value="{{(lg.currentUser | async).fullname}}"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">Nick Name</div>
+            <div class="col-md-8"><input type="text" class="form-control" [(ngModel)]="nickname" value="{{(lg.currentUser | async).nickname}}"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">Email</div>
+            <div class="col-md-8">{{(lg.currentUser | async).email}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">Picture </div>
+            <div class="col-md-6"><img src="{{(lg.currentUser | async).picture}}"></div>
+            <div class="col-md-2"><button (click)="upload()">Upload</button> </div>
+
+        </div>
+
+    </div>
+    <button class="btn btn-primary btn-lg" (click)="save()">Save</button>
+
+</div>

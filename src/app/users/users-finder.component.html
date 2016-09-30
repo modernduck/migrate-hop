@@ -1,0 +1,27 @@
+<section class="users-finder" *ngIf="display">    
+    <div>
+        <input type="text" class="form-control" [(ngModel)]="q" (keypress)="onKeyPress($event)"  placeholder="Search for Name / Email / Group" />  
+        <div *ngIf="users">
+            
+            <table class="table table-striped">
+                <thead>
+                    <th>Picture</th>
+                    <th>Nickname</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Group</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of (users| async) | filterByUserAttribute:q | filterByUserGroup:group | filterByUserScope:scope" (click)="select(item)" class="scope-{{item.scope}}">
+                        <td><img src="{{item.picture}}"/></td>
+                        <td>{{item.nickname}} </td>
+                        <td>{{item.fullname}}</td>
+                        <td>{{item.email}}</td>
+
+                        <td><group-joined-display [groups]="item.group"></group-joined-display></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

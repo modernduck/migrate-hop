@@ -1,0 +1,143 @@
+<section class="courses-form" >
+    
+    <!--<form class="form" (submit)="save()">-->
+        <div class="row">
+            <div class="col-md-1 col-sd-12">
+                <label>Name:</label>
+            </div>
+            <div class="col-md-11 col-sd-12">
+                <input type="text" required [(ngModel)]="course.name" class="form-control" placeholder="eg. Lindy Hop" [ngModelOptions]="{standalone: true}" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 col-sd-12">
+                <label>Public:</label>
+            </div>
+            <div class="col-md-1 col-sd-12">
+                <input type="checkbox" required [(ngModel)]="course.public"  placeholder="code" [ngModelOptions]="{standalone: true}" />
+            </div>
+            <div class="col-md-1 col-sd-12">
+                <label>Code:</label>
+            </div>
+            <div class="col-md-3 col-sd-12">
+                <input type="text" required [(ngModel)]="course.code" class="form-control" placeholder="code" [ngModelOptions]="{standalone: true}" />
+            </div>
+            <div class="col-md-1 col-sd-12">
+                <label>Type:</label>
+            </div>
+            <div class="col-md-5 col-sd-12">
+                <courses-type [type]="course.type" (onSelected)="onSelectedType($event)"></courses-type>
+
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col-md-1 col-sd-12">
+                <label>Description:</label>
+            </div>
+            <div class="col-md-11 col-sd-12">
+                    <textarea required [(ngModel)]="course.description" class="form-control" [ngModelOptions]="{standalone: true}"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 col-sd-12">
+                <label>Date:</label>
+            </div>
+            <div class="col-md-5 col-sd-12">
+                    <input type="date" required [(ngModel)]="course.start_date"  class="form-control" [ngModelOptions]="{standalone: true}" />
+            </div>
+            <div class="col-md-1 col-sd-12">
+                    <label>to</label>
+            </div>
+            <div class="col-md-5 col-sd-12">
+                    <input type="date" required [(ngModel)]="course.end_date"  class="form-control" [ngModelOptions]="{standalone: true}" />
+            </div>
+        </div>
+         <div class="row">
+             <div class="col-md-1 col-sd-12">
+                <label>Days:</label>
+            </div>
+            <div class="col-md-11 col-sd-12">
+              <courses-day-form required [daysNumber]="course.days" (onUpdate)="onUpdateDay($event)"></courses-day-form>
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 col-sd-12">
+                <label>Time:</label>
+            </div>
+            <div class="col-md-5 col-sd-12">
+                    <input type="time" required [(ngModel)]="course.start_time"  class="form-control" [ngModelOptions]="{standalone: true}" />
+            </div>
+            <div class="col-md-1 col-sd-12">
+                    <label>to</label>
+            </div>
+            <div class="col-md-5 col-sd-12">
+                    <input type="time" required [(ngModel)]="course.end_time"  class="form-control" [ngModelOptions]="{standalone: true}" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <label>Teacher:</label>
+            </div>
+            <div class="col-md-11">
+                <courses-teacher [teacher]="course.teacher"></courses-teacher><br/>
+                <div *ngIf="!isAddTeacher">
+                    <a (click)="isAddTeacher=true" >Add Teacher</a>
+                    <a (click)="removeAllTeacher()">Remove All Teacher</a>
+                    
+                </div>
+                <div *ngIf="isAddTeacher">
+                    <div>
+                        <button class="btn btn-danger pull-right" (click)="isAddTeacher=false">X</button>
+                    </div>
+                    <users-finder [group]="'teacher'" (onSelected)="onAddTeacher($event)"></users-finder>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+             <div class="col-md-1">
+                <label>Class Group:</label>
+            </div>
+            <div class="col-md-11">
+                <courses-group-form [isNew]="isNew" [group]="course.group" (onUpdateGroup)="onUpdateGroup($event)"> </courses-group-form>
+            </div>
+        </div>
+
+        <div class="row">
+             <div class="col-md-1">
+                <label> Exclude:</label>
+            </div>
+            <div class="col-md-11">
+                (Option) Select a User's group that can't  signup immediatly
+                
+                <ul>
+                    <li *ngFor="let item of keyToArray(course.exclude)">
+                        {{item}} <a (click)="removeExclude(item)">X</a>
+                    </li>
+                </ul>
+                <group-finder (onSelected)="onSelectedExclude($event)"></group-finder>
+            </div>
+        </div>
+        <div class="row">
+             <div class="col-md-1">
+                <label> Require:</label>
+            </div>
+            <div class="col-md-11">
+                (Option) Select a User's group require to be in the group to signup immediatly
+                <li *ngFor="let item of keyToArray(course.require)">
+                        {{item}} <a (click)="removeRequire(item)">X</a>
+                    </li>
+                <group-finder  (onSelected)="onSelectedRequire($event)"></group-finder>
+            </div>
+        </div>
+        
+
+        <button (click)="save()" class="btn btn-primary btn-lg">Save</button>
+    <!--    <input type="submit" value="Save">
+    </form>-->
+
+
+    <pre>{{course |json }}</pre>
+</section>

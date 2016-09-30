@@ -1,0 +1,48 @@
+<section class="course-detail" *ngIf="course">
+    <div class="col-md-6">
+        <h2>{{course.name}}</h2>
+        <p>{{course.description}}</p>
+        <div class="when">
+           <p> Start from {{course.start_date | date}} to {{course.end_date | date}}</p>
+           <p><courses-day  [daysNumber]="course.days"></courses-day></p>
+           <p>{{course.start_time}} - {{course.end_time}}</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h2>Register</h2>
+        <div class="well" *ngIf="isQualify" >
+            You can sign up now and ready to go.
+        </div>
+        <div class="well" *ngIf="!isQualify" >
+            This course might too diffcult for you
+        </div>
+        <div *ngIf="!canRegister" class="well">
+            You already add this course to cart.  <button (click)="clear()" class="btn">Remove from Cart</button> or <a routerLink="/checkout" class="btn btn-primary">Check Your Order</a>
+        </div>
+        <table class="table"  *ngIf="canRegister">
+            <thead>
+                <th>Name</th>
+                <th>Price</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (course.group | object2Array)">
+                    <td>{{item.name}}</td>
+                    <td>{{item.price}}</td>
+                    <td >
+                        <div *ngIf="isQualify">
+                            <button (click)="signup(item)" *ngIf="item.limit > 0" class="btn btn-success">SIGN UP</button>
+                            <a routerLink=".." *ngIf="!(item.limit > 0)" class="btn btn-default">SOLD OUT</a>
+                        </div>
+                        <div *ngIf="!isQualify">
+                            <button (click)="requestToJoin(item)" *ngIf="item.limit > 0" class="btn btn-warning">REQUEST TO JOIN</button>
+                            <a routerLink=".." *ngIf="!(item.limit > 0)" class="btn btn-default">SOLD OUT</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+   
+    
+</section>

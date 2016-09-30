@@ -1,0 +1,9 @@
+.users-finder img
+{
+    max-width:150px;
+
+}   
+
+.table-striped>tbody>tr:nth-of-type(odd).scope-true ,tr.scope-true{
+    background-color: lawngreen;
+}
