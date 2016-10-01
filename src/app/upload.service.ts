@@ -6,6 +6,7 @@ const ON_START_UPLOAD =1, UPLOAD_DONE=2
 export class UploadService {
   private uploadEvent;
   private name;
+  
 
   constructor(private _ngZone: NgZone) {
     
@@ -32,7 +33,7 @@ export class UploadService {
     this.name = name;
   }
 
-  upload(url, callback){
+  /*upload(url, callback){
     localStorage['_image_upload_status'] = "waiting"
     
      this._ngZone.runOutsideAngular(() => {
@@ -49,6 +50,34 @@ export class UploadService {
       console.log('gonna upload with obj stuff')
       window.open(uploadHtmlUrl + "?url=" +  url.url + "/" + "&file_name=" + url.file_name , "Upload Stuff",'height=200,width=250');
     }
+  }*/
+
+
+
+  upload(url):Promise<any>{
+    return new Promise( (resolve, reject) => {
+      localStorage['_image_upload_status'] = "waiting";
+
+
+       this._ngZone.runOutsideAngular(() => {
+       this._listenEvent((data)=>{
+          resolve(data)
+       })
+
+       //open popup
+        if(typeof(url) == "string")
+          window.open(uploadHtmlUrl + "?url=" +  url + "/", "Upload Stuff",'height=200,width=250');
+        else if(typeof(url) == "object")
+        {
+          console.log(url)
+          console.log('gonna upload with obj stuff')
+          window.open(uploadHtmlUrl + "?url=" +  url.url + "/" + "&file_name=" + url.file_name , "Upload Stuff",'height=200,width=250');
+        }
+    });
+
+    })
+
+
   }
 
 }

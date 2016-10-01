@@ -34,24 +34,27 @@ export class ProfileEditComponent implements OnInit {
   upload()
   {
     
-    this.uploadService.upload('profile/' + this.lg.currentUserKey, data=>{
+    /*this.uploadService.upload('profile/' + this.lg.currentUserKey, data=>{
       console.log('gonna update')
       console.log(data)
         this.userService.updatePicture(this.lg.currentUserKey, data.downloadUrl[0])
         
         this.pictureUrl = data.downloadUrl[0]
+    })*/
+    this.uploadService.upload('profile/' + this.lg.currentUserKey).then(data => {
+
+      this.userService.updatePicture(this.lg.currentUserKey, data.downloadUrl[0])
+      this.pictureUrl = data.downloadUrl[0]
     })
   }
     
 
   save()
   {
-    this.lg.currentUser.update({fullname:this.fullname, nickname:this.nickname})
-    this.lg.currentUser.subscribe(data=>{
-      console.log('after save')
-       console.log(data)
-       this.router.navigate(['profile'])
-    })
+    this.lg.currentUser.update({fullname:this.fullname, nickname:this.nickname}).then( ()=>{
+         this.router.navigate(['profile'])
+    } )  
+    
   }
 
 
