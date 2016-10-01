@@ -34,7 +34,7 @@ export class ProfileEditComponent implements OnInit {
   upload()
   {
     
-    this.uploadService.upload('profile', data=>{
+    this.uploadService.upload('profile/' + this.lg.currentUserKey, data=>{
       console.log('gonna update')
       console.log(data)
         this.userService.updatePicture(this.lg.currentUserKey, data.downloadUrl[0])
