@@ -65,7 +65,8 @@ const myFirebaseAuthConfig = {
     CourseService,
     CartService,
     NotificationsService,
-    PaymentService
+    PaymentService,
+    CheckinService
 
   ],
   bootstrap: [AppComponent]
