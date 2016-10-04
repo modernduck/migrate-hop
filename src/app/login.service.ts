@@ -12,7 +12,7 @@ export class LoginService {
   
   _isLogin = false;
   _callbackSuccess:any;
-  public currentUserKey;
+  public currentUserKey:string;
   public promiseUser:Promise<PromiseUser>
   public test = "yo"
   public currentUser:FirebaseObjectObservable<any> = null;

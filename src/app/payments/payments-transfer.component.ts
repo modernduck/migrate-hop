@@ -32,7 +32,8 @@ export class PaymentsTransferComponent implements OnInit {
           this.current_user_key = data.key;
           this.payment_transaction_key = this.paymentService.generateKey(this.current_user_key)
           this.paymentService.getUploadReference(this.current_user_key).then(data=>{
-              
+            console.log('upload ref' )
+            console.log(data)
              this.upload_reference = data;
           })
       })
@@ -81,7 +82,7 @@ export class PaymentsTransferComponent implements OnInit {
 
   upload() {
       
-      this.uploadService.upload({
+      /*this.uploadService.upload({
           url:this.upload_reference.url, 
           file_name:this.upload_reference.file_name
         }, data => {
@@ -91,7 +92,17 @@ export class PaymentsTransferComponent implements OnInit {
           this.payment_transfer.slip_url = data.downloadUrl;
           this.payment_transaction.payment_reference = data.fullPath;
 
-      })
+      })*/
+      this.uploadService.upload({
+          url:this.upload_reference.url, 
+          file_name:this.upload_reference.file_name
+        }).then( data => {
+          console.log('already upload')
+          console.log(data)
+          this.isUploaded = true;
+          this.payment_transfer.slip_url = data.downloadUrl;
+          this.payment_transaction.payment_reference = data.fullPath;
+        })
   }
 
   
