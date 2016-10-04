@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymentTransaction } from "../model/payment-transaction"
 import { PaymentService } from "../payment.service"
+import { UploadService } from "../upload.service"
 import { ActivatedRoute, Params } from "@angular/router"
 @Component({
   
@@ -29,7 +30,7 @@ import { ActivatedRoute, Params } from "@angular/router"
     </div>
     <div class="row">
       <div class="col-md-1">Reference</div>
-      <div class="col-md-5">{{payment_transaction.payment_reference}}</div>
+      <div class="col-md-5"><a (click)="download()">{{payment_transaction.payment_reference}}</a></div>
       <div class="col-md-1">Type</div>
       <div class="col-md-5">({{payment_transaction.payment_type}})</div>
     </div>
@@ -56,7 +57,7 @@ import { ActivatedRoute, Params } from "@angular/router"
 })
 export class PaymentsDetailComponent implements OnInit {
   private current_show_status = "uploaded"
-  constructor(private paymentService:PaymentService, private route:ActivatedRoute) { }
+  constructor(private paymentService:PaymentService, private route:ActivatedRoute, private up:UploadService) { }
   private user_key;
   private time_key;
   private payment_order;
@@ -73,6 +74,10 @@ export class PaymentsDetailComponent implements OnInit {
     
   
 
+  }
+
+  download(){
+    this.up.download(this.payment_transaction.payment_reference)
   }
 
 

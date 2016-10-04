@@ -24,6 +24,8 @@ export class CheckinComponent implements OnInit {
   ngOnInit() {
     this.key_date =  new Date().toISOString().slice(0, 10);//2016-10-01
     this.cs.loadAvailableCourse().subscribe(data => {
+      console.log('show all')
+      console.log(data)
       this.avaialable_course = data;
     })
     this.showFinder =false;
@@ -88,6 +90,8 @@ export class CheckinComponent implements OnInit {
     this.active_course_index = index;
     this.showFinder = true;
     //console.log('course_key :' + this.avaialable_course[index].$key)
+    console.log('data : ' + this.avaialable_course[index].$key)
+    console.log(' this.key_date : ' +  this.key_date)
     this.cs.init(this.avaialable_course[index].$key, this.key_date).then( data=>{
       //console.log('init')
       //console.log(data)

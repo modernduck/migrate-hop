@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 
 const uploadHtmlUrl = "upload.html"
+const downloadHtmlUrl = "download.html";
 const ON_START_UPLOAD =1, UPLOAD_DONE=2 
 @Injectable()
 export class UploadService {
@@ -30,6 +31,10 @@ export class UploadService {
 
   setName(name) {
     this.name = name;
+  }
+
+  download(ref:string){
+    window.open(downloadHtmlUrl + "?ref=" + ref )
   }
 
   upload(url, callback){

@@ -28,7 +28,7 @@ export class CheckinService {
         if(  typeof data_list.$value != "undefined"){
           //create new shit
           //get list from COURSE_ENROLL_USERS
-          
+          console.log('||| => ' + COURSE_ENROLL_USERS + course_key)
           this.af.database.object(COURSE_ENROLL_USERS + course_key).subscribe(data =>{
             //got item
             var init_data ={};
@@ -36,7 +36,9 @@ export class CheckinService {
               init_data[key] = false;
             
               delete init_data['$key']
-
+              delete init_data['$exists']
+            console.log('||| => ' + ROOT_PATH + course_key + "/" + date)
+            console.log(init_data)
             this.af.database.object(ROOT_PATH + course_key + "/" + date).set(init_data);
             
             resolve(init_data)
