@@ -1,6 +1,6 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent, LogoutComponent }      from './login';
+import { LoginComponent, LogoutComponent, SignupComponent }      from './login';
 import { ProfileComponent, ProfileEditComponent } from "./profile"
 import { CoursesComponent, CoursesFormComponent, CoursesDetailComponent, CoursesApproveComponent, CoursesEnrollComponent } from "./courses";
 import { GroupComponent, GroupFormComponent } from "./group"
@@ -16,6 +16,10 @@ const appRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'signup',
+    component: SignupComponent
   },
   {
     path: 'logout',

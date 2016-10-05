@@ -13,6 +13,7 @@ const TRANSACTION_PATH = "payment_transactions/"
 const ORDER_PATH = "payment_order/"
 const PAYMENT_STATUS_PATH = "payment_transactions_status/"
 const USER_ENROLL_PATH = "users_enroll_courses/"
+const USER_PENDING_PATH = "users_pending_courses/"
 const COURSE_HAS_USERS = "course_enroll_users/"
 const COURSE_ROOT_PATH = "courses/"
 var global_is_update = false;
@@ -97,10 +98,15 @@ export class PaymentService {
 
 
         this.af.database.object(TRANSACTION_PATH + user_key + "/" + now).set(payment_transaction.getData())
+        //make it pending
+        //this.af.database.object(USER_PENDING_PATH + user_key + "/" + cour
+        
+
         //update payment status
         this.af.database.object(PAYMENT_STATUS_PATH + "uploaded/" + user_key + "-"  + now ).set(true )
-        
-        //this.af.database.object(USER_ENROLL_PATH + user_key + "/" + course_id).set(true)
+        console.log('create order')
+        console.log(payment_order)
+        //this.af.database.object(USER_PENDING_PATH + user_key + "/" + course_id).set(true)
 
         //create payment_order
         
@@ -139,7 +145,37 @@ export class PaymentService {
   }
 
 
+  cancelPaymentTransaction(user_key:string, time_key){
+      let _pm = new Promise<any>( (resolve, reject) =>{
+           this.af.database.object(TRANSACTION_PATH + user_key + "/" + time_key).subscribe( item =>{
+             resolve(item)
+           })
+      })
 
+      return _pm.then( singlePaymentTransaction => {
+        let currentStatus  = singlePaymentTransaction.status
+        this.af.database.object(TRANSACTION_PATH + user_key + "/" + time_key).remove().then( () =>{
+          //remove notification?
+          //remove payment_order
+          this.af.database.object(ORDER_PATH + user_key + "/" + time_key).remove();
+          //remove payment status
+          console.log(currentStatus)
+          this.af.database.object(PAYMENT_STATUS_PATH + currentStatus + "/" + this.generatePaymentStatusKey(user_key, time_key)).remove()
+          //decrease slip_count
+          var pm = new Promise <any>( (resolve, reject) =>{
+            this.af.database.object(TRANSACTION_PATH + user_key + "/slip_count" ).subscribe( data => {
+                resolve(data.$value)
+            })
+          })
+          pm.then(current_slip_count => {
+            console.log('current slip_count : ' + current_slip_count)
+            this.af.database.object(TRANSACTION_PATH + user_key + "/slip_count").set(current_slip_count - 1 >= 0?current_slip_count -1 : 0);
+          })
+        })
+
+      }  )
+       
+  }
 
   getPaymentTransaction(user_key:string, time_key){
     return this.af.database.object(TRANSACTION_PATH + user_key + "/" + time_key)

@@ -15,7 +15,7 @@ export class PaymentTransaction{
     public total:number;
     public transfer_date:string;
     public transfer_time:string;
-    private fields=["payment_type", "payment_reference", "status", "total", "discount", "fee", "transfer_date", "transfer_time"]
+    private  static fields=["payment_type", "payment_reference", "status", "total", "discount", "fee", "transfer_date", "transfer_time"]
     /*constructor(payment_type:string, payment_reference:string, status:string, total:number, discount:number, fee:number){
            this.payment_type = payment_type;
            this.payment_reference = payment_reference;
@@ -25,6 +25,10 @@ export class PaymentTransaction{
            this.fee = fee;
     }*/
 
+    canCancel():Boolean{
+        return this.status == "uploaded"
+    }
+
     isTransferType(){
         return this.payment_type == "transfer"
     }
@@ -33,13 +37,34 @@ export class PaymentTransaction{
         return this.status == "completed"
     }
 
+    public static loadSingle(payment_transaction):PaymentTransaction {
+        let pm = new PaymentTransaction();
+        PaymentTransaction.fields.forEach( field_name =>{
+                pm[field_name] = payment_transaction[field_name]
+        })
+        if(payment_transaction.$key)
+            pm['$key'] = payment_transaction.$key
+        return pm;
+    }
 
-    public static load(payment_transactions:Array<any>){
+    public static load(payment_transactions:Array<any>, withClass:Boolean = false):Array<any>{
         //basic filter remove the last one
-        return payment_transactions.filter((data, index, arr)=>{
+        //if(!withClass)
+        let filter_payment_transactions =  payment_transactions.filter((data, index, arr)=>{
             return data['$key'] != 'slip_count'
         })   
+        if(!withClass)
+            return filter_payment_transactions
+        else{
+            let result:Array<PaymentTransaction>  = [];
+            filter_payment_transactions.forEach(item =>{
+                result.push( PaymentTransaction.loadSingle(item) )
+            })
+            return result;
+        }
     }
+
+    
 
     public static getDataFromListItem(payment_list_item:any){
         //var raw:string = payment_list_item.$key;
@@ -54,7 +79,7 @@ export class PaymentTransaction{
 
     getData(){
         var data = {}
-        this.fields.forEach(key => {
+        PaymentTransaction.fields.forEach(key => {
             data[key] = this[key]
         })
         return data;

@@ -17,16 +17,20 @@ export class ProfileEditComponent implements OnInit {
   private fullname;
   private nickname;
   private pictureUrl;
+  private _group
+
   constructor(private lg:LoginService, private uploadService:UploadService, private userService:UserService, private router:Router ) {
       
    }
 
   ngOnInit() {
     //this.fullname = this.lg.currentUser.fullname
+    
     this.lg.getCurrentUser(data=>{
       this.fullname = data.fullname;
       this.nickname = data.nickname;
       this.pictureUrl = data.picture
+      this._group = data.group
     })
   }
 
@@ -51,9 +55,13 @@ export class ProfileEditComponent implements OnInit {
 
   save()
   {
-    this.lg.currentUser.update({fullname:this.fullname, nickname:this.nickname}).then( ()=>{
+    /*this.lg.currentUser.update({fullname:this.fullname, nickname:this.nickname}).then( ()=>{
          this.router.navigate(['profile'])
-    } )  
+    } )*/
+    this.userService.updateUser(this.lg.currentUserKey, {fullname:this.fullname, nickname:this.nickname, group:this._group}).then(() =>{
+      this.router.navigate(['profile'])
+    })
+    
     
   }
 

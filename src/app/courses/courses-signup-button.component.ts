@@ -23,6 +23,9 @@ export class CoursesSignupButtonComponent implements OnChanges {
 
   @Input()
   enroll
+
+  @Input()
+  pending
    
   constructor(private courseService:CourseService, private cartService:CartService) { }
 
@@ -34,8 +37,10 @@ export class CoursesSignupButtonComponent implements OnChanges {
   private isAdded = false;
   private isPlus = false;
   
+  
   ngOnChanges(changes:SimpleChanges){
   //ngOnChanges(changes:SimpleChanges){
+      this.full_group = [];
     this.group = this.course.group
     for(var g in this.group){
         if(this.group[g].public) {
@@ -69,12 +74,19 @@ export class CoursesSignupButtonComponent implements OnChanges {
         this.buttonClass = "btn-default"
     }
 
+    if(this.pending && this.pending[this.course["$key"]]){
+        this.displayButton = "PENDING"
+        this.buttonClass = "disabled"
+    }
+
     //console.log(this.enroll)
-    if(this.enroll && this.enroll[this.course["$key"]])
+    if(this.enroll && this.enroll[this.course["$key"]] )
     {
         this.displayButton = "ENROLL"
         this.buttonClass = "disabled"
     }
+
+    
   
 
   }

@@ -10,6 +10,7 @@
       <th>Status</th>
       <th>Transfer Date</th>
       <th>Transfer Time</th>
+      <th></th>
     </thead>
     <tbody>
       <tr *ngFor="let item of payments">
@@ -19,7 +20,12 @@
         <td>{{item.status}}</td>
         <td>{{item.transfer_date | date}}</td>
         <td>{{item.transfer_time }}</td>
-
+        <td>
+          <button class="btn btn-success" (click)="download(item)">DOWNLOAD</button> 
+          <div *ngIf="item.canCancel()"><br/>
+            <button class="btn btn-danger" (click)="cancel(item)">CANCEL</button>
+          </div>
+        </td>
       </tr>
     </tbody>
 </table>

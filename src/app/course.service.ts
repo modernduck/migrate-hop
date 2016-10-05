@@ -9,6 +9,7 @@ const ROOT_PATH = "courses/"
 const APPROVE_PATH = "users_waiting_approve_courses/"
 const USER_PATH = "users/"
 const USER_ENROLL_PATH = "users_enroll_courses/"
+const USER_PENDING_PATH = "user_pending_courses/"
 const COURSE_ENROLL_USERS = "course_enroll_users/"
 @Injectable()
 export class CourseService {
@@ -127,8 +128,12 @@ export class CourseService {
   setCourse(key, course) {
     console.log('path: ' +  (ROOT_PATH + key))
     console.log(course)
+
     if(course.$key)
       delete course.$key
+
+    if(course.$exists)
+      delete course.$exists
     var promise = this.af.database.object((ROOT_PATH + key)).set(course)
     promise.then(_ => console.log('success'))
   .catch(err => console.log(err, 'You dont have access!')); 
@@ -185,6 +190,10 @@ export class CourseService {
     this.af.database.object(USER_ENROLL_PATH + user_key + "/" + course_key).remove()
     //increse limit amount
     this.updateLimit(course_key, reference, "+", 1);
+  }
+
+  getPendingCourses(user_key:string){
+    return this.af.database.object(USER_PENDING_PATH + user_key)
   }
 
   getEnrollCourses(user_key:string){

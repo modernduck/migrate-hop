@@ -14,6 +14,7 @@ export class CoursesComponent implements OnInit {
   private user;
   private ckeditorContent;
   private enroll_course;
+  private pending_course
   constructor(private courseService:CourseService, private lg:LoginService) { }
 
   ngOnInit() {
@@ -27,6 +28,9 @@ export class CoursesComponent implements OnInit {
         console.log(courses)
         this.enroll_course = courses;
       })
+      this.courseService.getPendingCourses(user.$key).subscribe(courses=>{
+        this.pending_course = courses
+      });
       //console.log(user.$key)
     })
   }

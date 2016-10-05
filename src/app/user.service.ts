@@ -32,18 +32,27 @@ export class UserService {
   }
 
   private update_group(user_key, user) {
-    for(var group_name in user.group)
+    
+    for(let group_name in user.group)
     {
-      if( user.group[group_name] === true)
+      
+      if( user.group[group_name])
       {
-
+        
         this.af.database.object(MEMBER_GROUP_PATH +group_name +"/" + user_key).set(user.nickname)
       }else
       {
+        
         this.af.database.object(MEMBER_GROUP_PATH +group_name +"/" + user_key).remove()
       }
     }
 
+  }
+
+  public updateUser(user_key:string, user){
+      
+      this.update_group(user_key, user);
+      return this.af.database.object('users/' + user_key).update(user)
   }
 
   public setUser(user_key, user){

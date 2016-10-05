@@ -1,4 +1,4 @@
-<h2>Available Courses</h2> 
+<h2>Available Courses</h2> <a routerLink="./edit/new" class="btn btn-success">CREATE NEW</a>
 <table class="table table-striped">
     <thead>
       <th>Name</th>
@@ -11,13 +11,13 @@
     <tbody>
        <tr *ngFor="let c of courses  | filterByAttribute:'public':true">
           <td>{{c.name}} <span class="code">{{c.code}}</span> <a routerLink="edit/{{c.$key}}">EDIT</a>
-            <div>
+            <div *ngIf="(c.require | objectTrue2Array).length > 0" >
               Require: 
               <ul>
-                <li *ngFor="let requireGroup of c.require | objectTrue2Array">{{ requireGroup |json }}</li>
+                <li *ngFor="let requireGroup of c.require | objectTrue2Array">{{ requireGroup.$key}}</li>
               </ul>
             </div>
-            <div>
+            <!--<div >
               Exclude:
               <ul>
                 <li *ngFor="let excludeGroup of c.exclude | objectTrue2Array">{{ excludeGroup.$key |json }}</li>
@@ -25,13 +25,13 @@
             </div>
             <div>
               By <courses-teacher [teacher]="c.teacher"></courses-teacher> .
-            </div>
+            </div>-->
           </td>
           <td><courses-day [daysNumber]="c.days"></courses-day> </td>
           <td>{{c.start_time}} - {{c.end_time}}</td>
           <td>{{c.start_date | date}}</td>
           <td>{{c.end_date | date}}</td>
-          <td><courses-signup [course]="c" [enroll]="enroll_course" ></courses-signup></td>
+          <td><courses-signup [course]="c" [enroll]="enroll_course" [pending]="pending_course" ></courses-signup></td>
         </tr>
     </tbody>
 </table>

@@ -1,0 +1,1 @@
+export const GOOGLE_CAPTHA_KEY:string = "6LcuWwgUAAAAAMWUbg_L2haxzh2UNhG1V5cKmw6u"

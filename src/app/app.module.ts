@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
 
-import { LoginComponent, LogoutComponent } from "./login"
+import { LoginComponent, LogoutComponent, SignupComponent } from "./login"
 import { CoursesComponent, DaysNumber2ObjectPipe, CoursesDayDisplayComponent, CoursesTeacherDisplayComponent, CoursesSignupButtonComponent, CoursesFormComponent, CoursesGroupFormComponent, CoursesDayFormComponent, CourseTypeComponent, CoursesDetailComponent, CoursesApproveComponent, CoursesEnrollComponent } from './courses'
 import { ProfileComponent, ProfileEditComponent } from "./profile"
 import { GroupComponent, GroupFormComponent,GroupJoinedDisplayComponent,  GroupFinderComponent } from "./group"
@@ -26,7 +26,7 @@ import { PaymentService } from "./payment.service"
 import { CheckinService } from "./checkin.service"
 import { routing } from './app.routing';
 import { Object2ArrayPipe, ObjectTrue2ArrayPipe, FilterByAttributePipe } from "./app.pipe"
-
+import { ReCaptchaModule } from 'angular2-recaptcha';
 
 //directives
 import { HighlightDirective  } from "./app.directives"
@@ -48,14 +48,15 @@ const myFirebaseAuthConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, CoursesComponent, MenuComponent,MenuLoginComponent, LogoutComponent, ProfileComponent, ProfileEditComponent, GroupComponent, Object2ArrayPipe, ObjectTrue2ArrayPipe, GroupFormComponent, UsersFinderComponent, GroupJoinedDisplayComponent, FilterByAttributePipe, FilterByUserAttributePipe, DaysNumber2ObjectPipe, CoursesDayDisplayComponent, CoursesTeacherDisplayComponent, CoursesSignupButtonComponent, CoursesFormComponent, FilterByUserGroupPipe, CoursesGroupFormComponent, HighlightDirective, CoursesDayFormComponent, GroupFinderComponent, CourseTypeComponent,CoursesDetailComponent, CheckoutComponent, CheckoutBarComponent, NotificationsComponent, CoursesApproveComponent, PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, CheckinComponent, FilterByUserScopePipe, CoursesEnrollComponent, UsersDisplayComponent
+    AppComponent, LoginComponent, CoursesComponent, MenuComponent,MenuLoginComponent, LogoutComponent, ProfileComponent, ProfileEditComponent, GroupComponent, Object2ArrayPipe, ObjectTrue2ArrayPipe, GroupFormComponent, UsersFinderComponent, GroupJoinedDisplayComponent, FilterByAttributePipe, FilterByUserAttributePipe, DaysNumber2ObjectPipe, CoursesDayDisplayComponent, CoursesTeacherDisplayComponent, CoursesSignupButtonComponent, CoursesFormComponent, FilterByUserGroupPipe, CoursesGroupFormComponent, HighlightDirective, CoursesDayFormComponent, GroupFinderComponent, CourseTypeComponent,CoursesDetailComponent, CheckoutComponent, CheckoutBarComponent, NotificationsComponent, CoursesApproveComponent, PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, CheckinComponent, FilterByUserScopePipe, CoursesEnrollComponent, UsersDisplayComponent, SignupComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig,myFirebaseAuthConfig),
-    routing
+    routing,
+    ReCaptchaModule
   ],
   providers: [
     LoginService,
