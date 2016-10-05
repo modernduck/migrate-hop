@@ -9,7 +9,7 @@ const ROOT_PATH = "courses/"
 const APPROVE_PATH = "users_waiting_approve_courses/"
 const USER_PATH = "users/"
 const USER_ENROLL_PATH = "users_enroll_courses/"
-const USER_PENDING_PATH = "user_pending_courses/"
+const USER_PENDING_PATH = "users_pending_courses/"
 const COURSE_ENROLL_USERS = "course_enroll_users/"
 @Injectable()
 export class CourseService {
@@ -193,6 +193,8 @@ export class CourseService {
   }
 
   getPendingCourses(user_key:string){
+    console.log('-------------------------------------')
+    console.log(USER_PENDING_PATH + user_key)
     return this.af.database.object(USER_PENDING_PATH + user_key)
   }
 

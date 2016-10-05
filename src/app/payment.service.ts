@@ -60,6 +60,15 @@ export class PaymentService {
   generatePaymentStatusKey(user_key:string, now:number){
     return user_key + "-" + now;
   }
+
+  getKeysFromPaymentOrder(payment_order_key:string){
+    let result = payment_order_key.split('-')
+    return {
+      course_key:result[0],
+      reference:result[1]
+    }
+  }
+
   /*
   * create payment_order
   * create payment_transactions
@@ -99,13 +108,15 @@ export class PaymentService {
 
         this.af.database.object(TRANSACTION_PATH + user_key + "/" + now).set(payment_transaction.getData())
         //make it pending
-        //this.af.database.object(USER_PENDING_PATH + user_key + "/" + cour
+        //console.log('---------------------')
+        for(var payment_order_key in payment_order)
+          this.af.database.object(USER_PENDING_PATH + user_key + "/" + this.getKeysFromPaymentOrder(payment_order_key).course_key).set(this.getKeysFromPaymentOrder(payment_order_key).reference) 
         
 
         //update payment status
         this.af.database.object(PAYMENT_STATUS_PATH + "uploaded/" + user_key + "-"  + now ).set(true )
-        console.log('create order')
-        console.log(payment_order)
+        //console.log('create order')
+        //console.log(payment_order)
         //this.af.database.object(USER_PENDING_PATH + user_key + "/" + course_id).set(true)
 
         //create payment_order
@@ -157,12 +168,26 @@ export class PaymentService {
         this.af.database.object(TRANSACTION_PATH + user_key + "/" + time_key).remove().then( () =>{
           //remove notification?
           //remove payment_order
-          this.af.database.object(ORDER_PATH + user_key + "/" + time_key).remove();
+          let payment_order_promise = new Promise<any>( (resolve, reject) => {
+            this.af.database.object(ORDER_PATH + user_key + "/" + time_key).subscribe( payment_order =>{
+              resolve(payment_order)
+            })
+          })
+          payment_order_promise.then( payment_order => {
+            //remove user_pending_path
+            for(let payment_order_key in payment_order)
+              if(payment_order_key != "$key" && payment_order_key != "$exists"){
+                console.log(USER_PENDING_PATH + user_key + "/" + this.getKeysFromPaymentOrder(payment_order_key).course_key)
+                this.af.database.object(USER_PENDING_PATH + user_key + "/" + this.getKeysFromPaymentOrder(payment_order_key).course_key).remove()
+              }
+            this.af.database.object(ORDER_PATH + user_key + "/" + time_key).remove();
+          } )
+          
           //remove payment status
           console.log(currentStatus)
           this.af.database.object(PAYMENT_STATUS_PATH + currentStatus + "/" + this.generatePaymentStatusKey(user_key, time_key)).remove()
           //decrease slip_count
-          var pm = new Promise <any>( (resolve, reject) =>{
+          let pm = new Promise <any>( (resolve, reject) =>{
             this.af.database.object(TRANSACTION_PATH + user_key + "/slip_count" ).subscribe( data => {
                 resolve(data.$value)
             })
@@ -211,6 +236,12 @@ export class PaymentService {
             payment_order.forEach(item=>{
               var cart_item = PaymentOrderItem.loadToCart(item)
               //USER_ENROLL_PATH
+              //remove user_pending_path
+            
+              
+              //remove course_pending
+                this.af.database.object(USER_PENDING_PATH + user_key + "/" + this.getKeysFromPaymentOrder(item.$key).course_key).remove()
+              
               //need to check if item is course or not
               this.courseService.enrollUser(cart_item.key, user_key, cart_item.reference)
               /*this.af.database.object(USER_ENROLL_PATH + user_key + "/" + cart_item.key).set(cart_item.reference)
@@ -231,6 +262,13 @@ export class PaymentService {
           //remove all enroll class?
           this.af.database.list(ORDER_PATH + user_key + "/" + time_key).subscribe(payment_order =>{
             payment_order.forEach(item=>{
+              if(payment_transaction.status == "uploaded")
+              {
+                console.log(item)
+                this.af.database.object(USER_PENDING_PATH + user_key + "/" + this.getKeysFromPaymentOrder(item.$key).course_key).set(this.getKeysFromPaymentOrder(item.$key.reference))
+              }
+                
+
               var cart_item = PaymentOrderItem.loadToCart(item)
               //USER_ENROLL_PATH
               //need to check if item is course or not
@@ -243,6 +281,7 @@ export class PaymentService {
             })
           });
         }
+        //deal with payment_transaction
         if(data.status != payment_transaction.status)
         {
           console.log('remove status: ' + PAYMENT_STATUS_PATH + data.status + "/"+ user_key + "-" + data.$key)
@@ -256,8 +295,10 @@ export class PaymentService {
           })
           this.af.database.object(PAYMENT_STATUS_PATH + payment_transaction.status + "/" + user_key + "-" + time_key ).set(true)
         }
+        console.log('clear other stuff')
+        //delete unnessary stuff
         delete payment_transaction.$key
-        
+        delete payment_transaction.$exists
         this.af.database.object(TRANSACTION_PATH + user_key + "/" + time_key).set(payment_transaction)
         is_update = true;
       }

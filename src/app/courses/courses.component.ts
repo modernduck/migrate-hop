@@ -28,8 +28,10 @@ export class CoursesComponent implements OnInit {
         console.log(courses)
         this.enroll_course = courses;
       })
-      this.courseService.getPendingCourses(user.$key).subscribe(courses=>{
-        this.pending_course = courses
+      this.courseService.getPendingCourses(user.$key).subscribe(cc=>{
+        //console.log('===pending')
+        //console.log(cc)
+        this.pending_course = cc
       });
       //console.log(user.$key)
     })

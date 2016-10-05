@@ -74,7 +74,10 @@ export class CoursesSignupButtonComponent implements OnChanges {
         this.buttonClass = "btn-default"
     }
 
+    //console.log('pending')
+    console.log(this.pending)
     if(this.pending && this.pending[this.course["$key"]]){
+        //console.log('yo')
         this.displayButton = "PENDING"
         this.buttonClass = "disabled"
     }
