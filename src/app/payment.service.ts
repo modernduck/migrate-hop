@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {AngularFire, FirebaseObjectObservable} from 'angularfire2';
 
 import { PaymentOrder, PaymentOrderItem } from "./model/payment-order"
+import {  Report } from "./model/report"
 import { CourseService } from "./course.service"
 import {  PaymentTransaction, PaymentTransfer } from "./model/payment-transaction"
 import { NotificationsService } from "./notifications.service"
@@ -219,6 +220,25 @@ export class PaymentService {
     return this.af.database.list(PAYMENT_STATUS_PATH + status)
   }
 
+  setPaymentOrder(user_key:string, time_key, payment_order:any):firebase.Promise<any>{
+    
+    let _data_payment_order = {}
+    payment_order.forEach(item =>{
+      console.log(item)
+      _data_payment_order[ item.$key ] = item;
+      delete  _data_payment_order[ item.$key ].$exists
+      delete  _data_payment_order[ item.$key ].$key
+    });
+    /*payment_order.forEach(item =>{
+      _data_payment_order[ item.$key ] = item;
+      delete  _data_payment_order[ item.$key ].$key
+      delete  _data_payment_order[ item.$key ].$exists
+    })*/
+    console.log(_data_payment_order)
+
+    return this.af.database.object(ORDER_PATH + user_key + "/" + time_key).update(_data_payment_order)
+  }
+
   setPaymentTransaction(user_key:string, time_key, payment_transaction){
     var is_update = false;
     var pm = new Promise<any>((resolve, reject) => {
@@ -265,7 +285,7 @@ export class PaymentService {
               if(payment_transaction.status == "uploaded")
               {
                 console.log(item)
-                this.af.database.object(USER_PENDING_PATH + user_key + "/" + this.getKeysFromPaymentOrder(item.$key).course_key).set(this.getKeysFromPaymentOrder(item.$key.reference))
+                this.af.database.object(USER_PENDING_PATH + user_key + "/" + this.getKeysFromPaymentOrder(item.$key).course_key).set(this.getKeysFromPaymentOrder(item.$key).reference)
               }
                 
 
@@ -306,7 +326,64 @@ export class PaymentService {
 
   }
   
-  
+  getCurrentReport():Promise<Report>{
+    return new Promise<Report>( (resolve , reject) => {
+        this.getAllPaymentTransaction('completed').subscribe( payment_transaction_weird_keys => {
+          //resolve(PaymentTransaction.load(payment_transactions, true))
+          let index = 0;
+          let transactions_counter = 0;
+          let orders_counter = 0;
+          let payment_transactions_promises:Array<Promise<PaymentTransaction>> = [] //= new Promise<PaymentTransaction>
+          let payment_orders_promises:Array<Promise<PaymentOrder>> = [];
+          let _payment_transactions:Array<PaymentTransaction> = [];
+          let _payment_user_keys:Array<string> = [];
+          let _payment_orders:Array<PaymentOrder> = [];
+
+          let checkPromise = (transactions_counter, orders_counter) => {
+            if(transactions_counter >= payment_transaction_weird_keys.length && orders_counter >= payment_transaction_weird_keys.length)
+              resolve(new Report(
+                _payment_transactions,
+                _payment_orders,
+                _payment_user_keys
+              ))
+              
+          }
+
+          payment_transaction_weird_keys.forEach(item => {
+            
+            let tmp = item.$key.split("-")
+            _payment_user_keys.push(tmp[0])
+            
+            payment_transactions_promises[index] = new Promise<PaymentTransaction>( (rs, rj) => {
+              this.getPaymentTransaction(tmp[0], tmp[1]).subscribe(pmt => {
+                  rs(pmt)
+              } )
+            })
+            payment_transactions_promises[index].then( pmt => {
+
+              _payment_transactions.push( PaymentTransaction.loadSingle(pmt))
+              transactions_counter++;
+              //if load all traction then resolve
+              checkPromise(transactions_counter, orders_counter)
+            })
+
+            payment_orders_promises[index] = new Promise<PaymentOrder>( (rs, rj) => {
+              this.getPaymentOrder(tmp[0], tmp[1]).subscribe( po => {
+                rs( PaymentOrder.load(po))
+              })
+            })
+
+            payment_orders_promises[index].then( po => {
+              _payment_orders.push( po)
+              orders_counter++;
+              checkPromise(transactions_counter, orders_counter)
+            })
+
+            index++;
+          })
+        })
+    })
+  }
 
 
 }

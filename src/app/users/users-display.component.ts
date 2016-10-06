@@ -10,7 +10,7 @@ import { UserService } from "../user.service"
 <div class="users-display" *ngIf="user">
     <div class="row">
         <div class="col-md-3">
-                <img src="{{user.picture}}"/>
+                <img src="{{user.picture}}" style="max-width:100%"/>
         </div>
         <div class="col-md-9">
             <h5>{{user.fullname}} ({{user.nickname}})</h5>

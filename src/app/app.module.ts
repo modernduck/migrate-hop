@@ -12,7 +12,7 @@ import { MenuComponent, MenuLoginComponent } from "./menu/"
 import { UsersFinderComponent, FilterByUserAttributePipe, FilterByUserGroupPipe, FilterByUserScopePipe, UsersDisplayComponent } from "./users"
 import { CheckoutComponent, CheckoutBarComponent } from "./checkout"
 import { NotificationsComponent } from "./notifications"
-import { PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent } from "./payments"
+import { PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, PaymentsReportComponent } from "./payments"
 import { CheckinComponent } from "./checkin"
 import { AngularFireModule,AuthProviders, AuthMethods , FIREBASE_PROVIDERS} from 'angularfire2';
 import { LoginService } from "./login.service"
@@ -48,7 +48,7 @@ const myFirebaseAuthConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, CoursesComponent, MenuComponent,MenuLoginComponent, LogoutComponent, ProfileComponent, ProfileEditComponent, GroupComponent, Object2ArrayPipe, ObjectTrue2ArrayPipe, GroupFormComponent, UsersFinderComponent, GroupJoinedDisplayComponent, FilterByAttributePipe, FilterByUserAttributePipe, DaysNumber2ObjectPipe, CoursesDayDisplayComponent, CoursesTeacherDisplayComponent, CoursesSignupButtonComponent, CoursesFormComponent, FilterByUserGroupPipe, CoursesGroupFormComponent, HighlightDirective, CoursesDayFormComponent, GroupFinderComponent, CourseTypeComponent,CoursesDetailComponent, CheckoutComponent, CheckoutBarComponent, NotificationsComponent, CoursesApproveComponent, PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, CheckinComponent, FilterByUserScopePipe, CoursesEnrollComponent, UsersDisplayComponent, SignupComponent
+    AppComponent, LoginComponent, CoursesComponent, MenuComponent,MenuLoginComponent, LogoutComponent, ProfileComponent, ProfileEditComponent, GroupComponent, Object2ArrayPipe, ObjectTrue2ArrayPipe, GroupFormComponent, UsersFinderComponent, GroupJoinedDisplayComponent, FilterByAttributePipe, FilterByUserAttributePipe, DaysNumber2ObjectPipe, CoursesDayDisplayComponent, CoursesTeacherDisplayComponent, CoursesSignupButtonComponent, CoursesFormComponent, FilterByUserGroupPipe, CoursesGroupFormComponent, HighlightDirective, CoursesDayFormComponent, GroupFinderComponent, CourseTypeComponent,CoursesDetailComponent, CheckoutComponent, CheckoutBarComponent, NotificationsComponent, CoursesApproveComponent, PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, CheckinComponent, FilterByUserScopePipe, CoursesEnrollComponent, UsersDisplayComponent, SignupComponent, PaymentsReportComponent
   ],
   imports: [
     BrowserModule,

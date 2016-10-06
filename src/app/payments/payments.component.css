@@ -25,3 +25,16 @@ div.nav-bot
 {
     margin-top:10px;
 }
+
+tr.normal-false > td.amount
+{
+    background-color:#ecb38c
+}
+
+tr:nth-of-type(odd).normal-false > td.amount{
+    background-color: #f7924a
+}
+
+td.amount{
+    text-align: right
+}

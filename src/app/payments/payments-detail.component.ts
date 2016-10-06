@@ -27,7 +27,7 @@ import { ActivatedRoute, Params } from "@angular/router"
       <div class="col-md-5"><input type="date" [(ngModel)]="payment_transaction.transfer_date" ></div>
       <div class="col-md-1">Transfer Time</div>
       <div class="col-md-5"><input type="time" [(ngModel)]="payment_transaction.transfer_time" ></div>
-    </div>
+    </div>  
     <div class="row">
       <div class="col-md-1">Reference</div>
       <div class="col-md-5"><a (click)="download()">{{payment_transaction.payment_reference}}</a></div>
@@ -40,7 +40,7 @@ import { ActivatedRoute, Params } from "@angular/router"
     <tr *ngFor="let item of payment_order">
       <td>{{item.$key}}</td>
       <td>{{item.quantity}}</td>
-      <td>{{item.unit_price}}</td>
+      <td><input type="number" [(ngModel)]="item.unit_price" (change)="updateOrder()" /></td>
 
     </tr>
   </table>
@@ -62,16 +62,16 @@ export class PaymentsDetailComponent implements OnInit {
   private time_key;
   private payment_order;
   private payment_transaction;
+  private isUpdateOrder =false;
 
-
-  loadData(event?:any){
-     
+  updateOrder(){
+    this.isUpdateOrder = true;
   }
-
 
   save(){
     this.paymentService.setPaymentTransaction(this.user_key, this.time_key, this.payment_transaction)
-    
+    if(this.isUpdateOrder)
+      this.paymentService.setPaymentOrder(this.user_key, this.time_key, this.payment_order)
   
 
   }
