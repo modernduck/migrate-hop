@@ -23,7 +23,7 @@ import { ActivatedRoute, Params } from "@angular/router"
         <tr *ngFor="let item of report.items" class="normal-{{item.amount == item.expect_amount}}">
             <td><span [ngStyle]="{'padding': '5px',  'background-color': toColor(item.reference_order)}">{{item.reference_order}}</span></td>
             <td>{{item.course_key}}</td>
-            <td>{{item.transfer_time | date}}</td>
+            <td>{{item.transfer_time | date:'fullDate'}}</td>
             <td class="amount"><input type="number" [(ngModel)]="item.amount" ></td>
             <td  class="amount">{{item.expect_amount |number}}</td>
             <td>{{item.buyer_user_key}}</td>
@@ -36,12 +36,14 @@ import { ActivatedRoute, Params } from "@angular/router"
         </tr>
     </tbody>
   </table>
+  <chart [options]="options"></chart>
   
   `,
   styleUrls: ['payments.component.css']
 })
 export class PaymentsReportComponent implements OnInit {
     private report:Report;
+    private options = {};
     constructor(private pm:PaymentService){
 
     }
@@ -58,7 +60,19 @@ export class PaymentsReportComponent implements OnInit {
     ngOnInit(){
         this.pm.getCurrentReport().then( report => {
             this.report = report;
+            let data = this.report.getCourseGraphData();
+             this.options = {
+                title : { text : 'Daily Income' },
+                series: [{
+                    data: data.data,
+                }],
+                xAxis:{
+                    categories: data.labels
+                }
+            };
         } )
+       
+
     }
 
     downloadCSV(){
@@ -86,5 +100,5 @@ export class PaymentsReportComponent implements OnInit {
             }
         }
     }
-
+  
 }

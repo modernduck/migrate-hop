@@ -82,6 +82,46 @@ export class Report{
         })
         return csv;
     }
+
+    public static convertTimeToLabel( time:Date ):string{
+        return time.toISOString().substr(0, 10);
+    }
+
+    getCourseGraphData( course_key?:string ):any{
+        let data = [];
+        let items = this.items;
+        if(course_key)
+            items = this.items.filter( item => {
+                return item.course_key == course_key
+            })
+        let sum = 0;
+        let raw_data = {}
+        items.forEach( item => {
+        
+            let key_time = Report.convertTimeToLabel( item.transfer_time )
+            if(!raw_data[ key_time ])
+                raw_data[ key_time] = 0;
+            raw_data[ key_time ] += item.amount;
+        
+        })
+        for(let key in raw_data){
+            data.push([key  , raw_data[key]])
+        }
+        data.sort( (a, b) =>{
+            let a_d = new Date(a[0])
+            let b_d = new Date(b[0])
+            return a_d.getTime() - b_d.getTime()
+            
+        })
+        let time_arr = [];
+        data.forEach(item =>{
+            time_arr.push(item[0]);
+        })
+        return {
+            labels:time_arr,
+            data:data
+        };
+    }
     
 
 

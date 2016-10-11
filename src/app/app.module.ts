@@ -27,6 +27,7 @@ import { CheckinService } from "./checkin.service"
 import { routing } from './app.routing';
 import { Object2ArrayPipe, ObjectTrue2ArrayPipe, FilterByAttributePipe } from "./app.pipe"
 import { ReCaptchaModule } from 'angular2-recaptcha';
+import { ChartModule }            from 'angular2-highcharts'
 
 //directives
 import { HighlightDirective  } from "./app.directives"
@@ -56,7 +57,8 @@ const myFirebaseAuthConfig = {
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig,myFirebaseAuthConfig),
     routing,
-    ReCaptchaModule
+    ReCaptchaModule,
+    ChartModule
   ],
   providers: [
     LoginService,
