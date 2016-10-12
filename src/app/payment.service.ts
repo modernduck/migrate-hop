@@ -5,6 +5,7 @@ import { PaymentOrder, PaymentOrderItem } from "./model/payment-order"
 import {  Report } from "./model/report"
 import { CourseService } from "./course.service"
 import {  PaymentTransaction, PaymentTransfer } from "./model/payment-transaction"
+import 'rxjs/add/operator/take'
 import { NotificationsService } from "./notifications.service"
 import { Notification } from "./model/notification"
 
@@ -216,7 +217,7 @@ export class PaymentService {
   }
 
   getAllPaymentTransaction(status:string){
-    
+    //console.log('>>call path:' + PAYMENT_STATUS_PATH + status)
     return this.af.database.list(PAYMENT_STATUS_PATH + status)
   }
 
@@ -242,7 +243,7 @@ export class PaymentService {
   setPaymentTransaction(user_key:string, time_key, payment_transaction){
     var is_update = false;
     var pm = new Promise<any>((resolve, reject) => {
-      this.af.database.object(TRANSACTION_PATH + user_key + "/" + time_key).subscribe(data =>{
+      this.af.database.object(TRANSACTION_PATH + user_key + "/" + time_key).take(1).subscribe(data =>{
         resolve(data)
       })  
     })
@@ -328,8 +329,12 @@ export class PaymentService {
   
   getCurrentReport():Promise<Report>{
     return new Promise<Report>( (resolve , reject) => {
-        this.getAllPaymentTransaction('completed').subscribe( payment_transaction_weird_keys => {
+      
+      console.log('get current reportdo')
+        this.getAllPaymentTransaction('completed').take(1).subscribe  ( payment_transaction_weird_keys => {
           //resolve(PaymentTransaction.load(payment_transactions, true))
+          console.log('---->')
+          console.log(payment_transaction_weird_keys)
           let index = 0;
           let transactions_counter = 0;
           let orders_counter = 0;
@@ -341,12 +346,13 @@ export class PaymentService {
 
           let checkPromise = (transactions_counter, orders_counter) => {
             if(transactions_counter >= payment_transaction_weird_keys.length && orders_counter >= payment_transaction_weird_keys.length)
+               
               resolve(new Report(
                 _payment_transactions,
                 _payment_orders,
                 _payment_user_keys
               ))
-              
+             
           }
 
           payment_transaction_weird_keys.forEach(item => {
@@ -355,7 +361,7 @@ export class PaymentService {
             _payment_user_keys.push(tmp[0])
             
             payment_transactions_promises[index] = new Promise<PaymentTransaction>( (rs, rj) => {
-              this.getPaymentTransaction(tmp[0], tmp[1]).subscribe(pmt => {
+               this.getPaymentTransaction(tmp[0], tmp[1]).take(1).subscribe(pmt => {
                   rs(pmt)
               } )
             })
@@ -368,7 +374,7 @@ export class PaymentService {
             })
 
             payment_orders_promises[index] = new Promise<PaymentOrder>( (rs, rj) => {
-              this.getPaymentOrder(tmp[0], tmp[1]).subscribe( po => {
+              this.getPaymentOrder(tmp[0], tmp[1]).take(1).subscribe( po => {
                 rs( PaymentOrder.load(po))
               })
             })
@@ -381,7 +387,7 @@ export class PaymentService {
 
             index++;
           })
-        })
+        })//end subscribe
     })
   }
 

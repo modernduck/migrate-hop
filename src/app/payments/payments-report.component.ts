@@ -10,6 +10,9 @@ import { ActivatedRoute, Params } from "@angular/router"
   template: `
   <h2>Create New Report</h2>
   <button (click)="downloadCSV()" class="btn btn-success" >DOWNLOAD</button>
+  <div class="row">
+    <div class="col-md-12" ><chart [options]="options" style="width:800px;" ></chart></div>
+  </div>
   <table class="table table-striped" *ngIf='report'>
     <thead>
         <th>Reference Order.</th>
@@ -21,7 +24,9 @@ import { ActivatedRoute, Params } from "@angular/router"
     </thead>
     <tbody>
         <tr *ngFor="let item of report.items" class="normal-{{item.amount == item.expect_amount}}">
-            <td><span [ngStyle]="{'padding': '5px',  'background-color': toColor(item.reference_order)}">{{item.reference_order}}</span></td>
+            <td><a routerLink="../list/{{item.buyer_user_key}}/{{item.reference_order}}"><span [ngStyle]="{'padding': '5px',  'background-color': toColor(item.reference_order)}">
+                {{item.reference_order}}
+            </span></a></td>
             <td>{{item.course_key}}</td>
             <td>{{item.transfer_time | date:'fullDate'}}</td>
             <td class="amount"><input type="number" [(ngModel)]="item.amount" ></td>
@@ -36,7 +41,9 @@ import { ActivatedRoute, Params } from "@angular/router"
         </tr>
     </tbody>
   </table>
-  <chart [options]="options"></chart>
+  
+
+  
   
   `,
   styleUrls: ['payments.component.css']
@@ -58,18 +65,20 @@ export class PaymentsReportComponent implements OnInit {
     }
 
     ngOnInit(){
+        console.log('load data')
         this.pm.getCurrentReport().then( report => {
             this.report = report;
-            let data = this.report.getCourseGraphData();
-             this.options = {
-                title : { text : 'Daily Income' },
-                series: [{
-                    data: data.data,
-                }],
+            console.log('report')
+            console.log(this.report)
+            let all_data =  this.report.getAllGrossGraphData();
+            this.options = {
+                title : {text : 'Income'},
+                series: all_data.series,
                 xAxis:{
-                    categories: data.labels
+                    categories:all_data.labels
                 }
-            };
+            }
+            
         } )
        
 
