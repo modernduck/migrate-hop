@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 //import { PaymentTransaction } from "../model/payment-transaction"
 import { Report } from "../model/report"
+import { PAYMENT } from "../config/payment"
 import { PaymentService } from "../payment.service"
+import { ReportService } from "../report.service"
 import { UploadService } from "../upload.service"
-import { ActivatedRoute, Params } from "@angular/router"
+import { ActivatedRoute, Params, Router } from "@angular/router"
 @Component({
   
   selector: 'payments-report',
   template: `
   <h2>Create New Report</h2>
   <button (click)="downloadCSV()" class="btn btn-success" >DOWNLOAD</button>
+  <button (click)="createReport()" class="btn btn-primary"> Create A Report</button>
   <div class="row">
     <div class="col-md-12" ><chart [options]="options" style="width:800px;" ></chart></div>
   </div>
@@ -29,7 +32,7 @@ import { ActivatedRoute, Params } from "@angular/router"
             </span></a></td>
             <td>{{item.course_key}}</td>
             <td>{{item.transfer_time | date:'fullDate'}}</td>
-            <td class="amount"><input type="number" [(ngModel)]="item.amount" ></td>
+            <td class="amount">{{item.amount | number}}</td>
             <td  class="amount">{{item.expect_amount |number}}</td>
             <td>{{item.buyer_user_key}}</td>
         </tr>
@@ -51,7 +54,7 @@ import { ActivatedRoute, Params } from "@angular/router"
 export class PaymentsReportComponent implements OnInit {
     private report:Report;
     private options = {};
-    constructor(private pm:PaymentService){
+    constructor(private pm:PaymentService, private router:Router, private rs:ReportService){
 
     }
 
@@ -68,8 +71,6 @@ export class PaymentsReportComponent implements OnInit {
         console.log('load data')
         this.pm.getCurrentReport().then( report => {
             this.report = report;
-            console.log('report')
-            console.log(this.report)
             let all_data =  this.report.getAllGrossGraphData();
             this.options = {
                 title : {text : 'Income'},
@@ -108,6 +109,18 @@ export class PaymentsReportComponent implements OnInit {
             document.body.removeChild(link);
             }
         }
+    }
+
+    createReport(){
+        if(confirm(PAYMENT.CREATE_REPORT_WARNING_MESSAGE))
+        {
+            console.log('create report na')
+            this.rs.createReport().then( report_key => {
+                console.log('done create report')
+                this.router.navigate(["/payment/list"])
+            })
+            
+        }       
     }
   
 }

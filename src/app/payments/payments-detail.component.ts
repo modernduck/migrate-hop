@@ -3,6 +3,7 @@ import { PaymentTransaction } from "../model/payment-transaction"
 import { PaymentService } from "../payment.service"
 import { UploadService } from "../upload.service"
 import { ActivatedRoute, Params } from "@angular/router"
+import 'rxjs/add/operator/take'
 @Component({
   
   selector: 'payments-detail',
@@ -86,10 +87,10 @@ export class PaymentsDetailComponent implements OnInit {
         
         this.user_key = params['user_key']
         this.time_key = params['time_key']
-        this.paymentService.getPaymentTransaction(this.user_key, this.time_key).subscribe(data=>{
+        this.paymentService.getPaymentTransaction(this.user_key, this.time_key).take(1).subscribe(data=>{
           this.payment_transaction = data;
         })
-        this.paymentService.getPaymentOrder(this.user_key, this.time_key).subscribe(data => {
+        this.paymentService.getPaymentOrder(this.user_key, this.time_key).take(1).subscribe(data => {
           this.payment_order = data;
         })
     })

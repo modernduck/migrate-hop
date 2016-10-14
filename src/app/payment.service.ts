@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+                                           import { Injectable } from '@angular/core';
 import {AngularFire, FirebaseObjectObservable} from 'angularfire2';
 
 import { PaymentOrder, PaymentOrderItem } from "./model/payment-order"
@@ -219,6 +219,10 @@ export class PaymentService {
   getAllPaymentTransaction(status:string){
     //console.log('>>call path:' + PAYMENT_STATUS_PATH + status)
     return this.af.database.list(PAYMENT_STATUS_PATH + status)
+  }
+
+  removeAllPaymentStatus(status:string){
+    return this.af.database.object(PAYMENT_STATUS_PATH + status).remove()
   }
 
   setPaymentOrder(user_key:string, time_key, payment_order:any):firebase.Promise<any>{

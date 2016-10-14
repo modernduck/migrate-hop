@@ -24,13 +24,16 @@ import { CartService } from "./cart.service"
 import { NotificationsService } from  "./notifications.service"
 import { PaymentService } from "./payment.service"
 import { CheckinService } from "./checkin.service"
+import { ReportService } from "./report.service"
 import { routing } from './app.routing';
 import { Object2ArrayPipe, ObjectTrue2ArrayPipe, FilterByAttributePipe } from "./app.pipe"
 import { ReCaptchaModule } from 'angular2-recaptcha';
 import { ChartModule }            from 'angular2-highcharts'
 
 //directives
-import { HighlightDirective  } from "./app.directives"
+import { HighlightDirective  } from "./app.directives";
+import { ReportComponent } from './report/report.component'
+import { ReportDetailComponent} from "./report/report-detail.component"
 
 // Must export the config
 export const firebaseConfig = {
@@ -49,7 +52,7 @@ const myFirebaseAuthConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, CoursesComponent, MenuComponent,MenuLoginComponent, LogoutComponent, ProfileComponent, ProfileEditComponent, GroupComponent, Object2ArrayPipe, ObjectTrue2ArrayPipe, GroupFormComponent, UsersFinderComponent, GroupJoinedDisplayComponent, FilterByAttributePipe, FilterByUserAttributePipe, DaysNumber2ObjectPipe, CoursesDayDisplayComponent, CoursesTeacherDisplayComponent, CoursesSignupButtonComponent, CoursesFormComponent, FilterByUserGroupPipe, CoursesGroupFormComponent, HighlightDirective, CoursesDayFormComponent, GroupFinderComponent, CourseTypeComponent,CoursesDetailComponent, CheckoutComponent, CheckoutBarComponent, NotificationsComponent, CoursesApproveComponent, PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, CheckinComponent, FilterByUserScopePipe, CoursesEnrollComponent, UsersDisplayComponent, SignupComponent, PaymentsReportComponent
+    AppComponent, LoginComponent, CoursesComponent, MenuComponent,MenuLoginComponent, LogoutComponent, ProfileComponent, ProfileEditComponent, GroupComponent, Object2ArrayPipe, ObjectTrue2ArrayPipe, GroupFormComponent, UsersFinderComponent, GroupJoinedDisplayComponent, FilterByAttributePipe, FilterByUserAttributePipe, DaysNumber2ObjectPipe, CoursesDayDisplayComponent, CoursesTeacherDisplayComponent, CoursesSignupButtonComponent, CoursesFormComponent, FilterByUserGroupPipe, CoursesGroupFormComponent, HighlightDirective, CoursesDayFormComponent, GroupFinderComponent, CourseTypeComponent,CoursesDetailComponent, CheckoutComponent, CheckoutBarComponent, NotificationsComponent, CoursesApproveComponent, PaymentsMethodComponent, PaymentsTransferComponent, PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, CheckinComponent, FilterByUserScopePipe, CoursesEnrollComponent, UsersDisplayComponent, SignupComponent, PaymentsReportComponent, ReportComponent, ReportDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,8 @@ const myFirebaseAuthConfig = {
     CartService,
     NotificationsService,
     PaymentService,
-    CheckinService
+    CheckinService,
+    ReportService
 
   ],
   bootstrap: [AppComponent]
