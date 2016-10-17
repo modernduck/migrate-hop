@@ -113,6 +113,13 @@ export class LoginService {
     })
   }
 
+  facebookLogin(){
+    this.auth.login({
+      provider:AuthProviders.Facebook,
+      method:AuthMethods.Redirect
+    })
+  }
+
 
   getCurrentUser(callback)
   {
