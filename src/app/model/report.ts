@@ -33,6 +33,7 @@ export class Report{
                 this.courses[po_item.getCourseKey()] = true;
                 reportItem.buyer_user_key = this.users_keys[po_index]
                 reportItem.expect_amount = po_item.unit_price;
+                reportItem.payment_type = this.payment_transactions[po_index].payment_type
                 this.items.push(reportItem)
             })
         })
@@ -208,4 +209,5 @@ export class ReportItem{
     amount:number;
     expect_amount:number;
     transfer_time:Date;
+    payment_type:string;
 }

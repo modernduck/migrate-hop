@@ -28,6 +28,32 @@ export class ReportDetailComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private rs:ReportService) { }
 
+  downloadCSV(){
+        let csvContent = this.report.toCSV();
+        let title ="MY REPORT"
+         var filename = title.replace(/ /g,'')+'.csv'; //gen a filename using the title but getting rid of spaces
+        var blob = new Blob([csvContent], { "type": 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) 
+        { // IE 10+
+            navigator.msSaveBlob(blob, filename);
+        } 
+        else //create a link and click it
+        {
+            var link = document.createElement("a");
+            if (link.download !== undefined) // feature detection
+            { 
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob); 
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            }
+        }
+    }
+
   ngOnInit() {
       this.route.params.forEach( (params:Params) => {
           params['key']

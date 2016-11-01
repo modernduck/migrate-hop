@@ -6,3 +6,4 @@ export * from "./payments-list.component";
 export * from "./payments-detail.component"
 export * from "./payments-report.component"
 export * from "./payments-receipt.component"
+export * from "./payments-paypal.component"

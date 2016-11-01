@@ -13,8 +13,17 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
   <h2>Create New Report</h2>
   <button (click)="downloadCSV()" class="btn btn-success" >DOWNLOAD</button>
   <button (click)="createReport()" class="btn btn-primary"> Create A Report</button>
-  <div class="row">
+  <!--<div class="row">
     <div class="col-md-12" ><chart [options]="options" style="width:800px;" ></chart></div>
+  </div>-->
+  <div class="row">
+   Payment <select>
+        <option>All</option>
+        <option>Tranfer</option>
+        <option>Cash</option>
+    </select>
+    From <input type="date" />
+    To <input type="date" />
   </div>
   <table class="table table-striped" *ngIf='report'>
     <thead>
@@ -23,7 +32,9 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
         <th>Transfer Time.</th>
         <th>Amount.</th>
         <th>Expect Amount. </th>
+        
         <th>From </th>
+        <th>Type </th>
     </thead>
     <tbody>
         <tr *ngFor="let item of report.items" class="normal-{{item.amount == item.expect_amount}}">
@@ -34,13 +45,16 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
             <td>{{item.transfer_time | date:'fullDate'}}</td>
             <td class="amount">{{item.amount | number}}</td>
             <td  class="amount">{{item.expect_amount |number}}</td>
+            
             <td>{{item.buyer_user_key}}</td>
+            <td >{{item.payment_type}}</td>
         </tr>
         <tr>
             <td colspan="3">Total</td>
             <td class="amount">{{report.getTotal() | number}}</td>
             <td class="amount">{{report.getExpectedTotal() | number}}</td>
             <td>{{report.getBuyerCount() | number}} user(s)</td>
+            <td></td>
         </tr>
     </tbody>
   </table>
