@@ -1,0 +1,39 @@
+<h2>Report {{key | date}}</h2>
+  <button (click)="downloadCSV()" class="btn btn-success" >DOWNLOAD</button>
+  <div class="row">
+    <div class="col-md-12" ><chart [options]="options" style="width:800px;" ></chart></div>
+  </div>
+  <div class="row">
+
+  </div>
+  <table class="table table-striped" *ngIf='report'>
+    <thead>
+        <th>Reference Order.</th>
+        <th>Course Key.</th>
+        <th>Transfer Time.</th>
+        <th>Amount.</th>
+        <th>Expect Amount. </th>
+        <th>From </th>
+        <th>Type </th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of report.items" class="normal-{{item.amount == item.expect_amount}}">
+            <td><a routerLink="/payment/list/{{item.buyer_user_key}}/{{item.reference_order}}"><span [ngStyle]="{'padding': '5px',  'background-color': toColor(item.reference_order)}">
+                {{item.reference_order}}
+            </span></a></td>
+            <td>{{item.course_key}}</td>
+            <td>{{item.transfer_time | date:'fullDate'}}</td>
+            <td class="amount">{{item.amount | number}}</td>
+            <td  class="amount">{{item.expect_amount |number}}</td>
+            
+            <td>{{item.buyer_user_key}}</td>
+            <td>{{item.payment_type}}</td>
+        </tr>
+        <tr>
+            <td colspan="3">Total</td>
+            <td class="amount">{{report.getTotal() | number}}</td>
+            <td class="amount">{{report.getExpectedTotal() | number}}</td>
+            <td>{{report.getBuyerCount() | number}} user(s)</td>
+        </tr>
+    </tbody>
+  </table>

@@ -1,15 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 //import { PaymentTransaction } from "../model/payment-transaction"
 import { Report } from "../model/report"
+import { PAYMENT } from "../config/payment"
 import { PaymentService } from "../payment.service"
+import { ReportService } from "../report.service"
 import { UploadService } from "../upload.service"
-import { ActivatedRoute, Params } from "@angular/router"
+import { ActivatedRoute, Params, Router } from "@angular/router"
 @Component({
   
   selector: 'payments-report',
   template: `
   <h2>Create New Report</h2>
   <button (click)="downloadCSV()" class="btn btn-success" >DOWNLOAD</button>
+  <button (click)="createReport()" class="btn btn-primary"> Create A Report</button>
+  <!--<div class="row">
+    <div class="col-md-12" ><chart [options]="options" style="width:800px;" ></chart></div>
+  </div>-->
+  <div class="row">
+   Payment <select>
+        <option>All</option>
+        <option>Tranfer</option>
+        <option>Cash</option>
+    </select>
+    From <input type="date" />
+    To <input type="date" />
+  </div>
   <table class="table table-striped" *ngIf='report'>
     <thead>
         <th>Reference Order.</th>
@@ -17,32 +32,43 @@ import { ActivatedRoute, Params } from "@angular/router"
         <th>Transfer Time.</th>
         <th>Amount.</th>
         <th>Expect Amount. </th>
+        
         <th>From </th>
+        <th>Type </th>
     </thead>
     <tbody>
         <tr *ngFor="let item of report.items" class="normal-{{item.amount == item.expect_amount}}">
-            <td><span [ngStyle]="{'padding': '5px',  'background-color': toColor(item.reference_order)}">{{item.reference_order}}</span></td>
+            <td><a routerLink="../list/{{item.buyer_user_key}}/{{item.reference_order}}"><span [ngStyle]="{'padding': '5px',  'background-color': toColor(item.reference_order)}">
+                {{item.reference_order}}
+            </span></a></td>
             <td>{{item.course_key}}</td>
-            <td>{{item.transfer_time | date}}</td>
-            <td class="amount"><input type="number" [(ngModel)]="item.amount" ></td>
+            <td>{{item.transfer_time | date:'fullDate'}}</td>
+            <td class="amount">{{item.amount | number}}</td>
             <td  class="amount">{{item.expect_amount |number}}</td>
+            
             <td>{{item.buyer_user_key}}</td>
+            <td >{{item.payment_type}}</td>
         </tr>
         <tr>
             <td colspan="3">Total</td>
             <td class="amount">{{report.getTotal() | number}}</td>
             <td class="amount">{{report.getExpectedTotal() | number}}</td>
             <td>{{report.getBuyerCount() | number}} user(s)</td>
+            <td></td>
         </tr>
     </tbody>
   </table>
+  
+
+  
   
   `,
   styleUrls: ['payments.component.css']
 })
 export class PaymentsReportComponent implements OnInit {
     private report:Report;
-    constructor(private pm:PaymentService){
+    private options = {};
+    constructor(private pm:PaymentService, private router:Router, private rs:ReportService){
 
     }
 
@@ -56,9 +82,21 @@ export class PaymentsReportComponent implements OnInit {
     }
 
     ngOnInit(){
+        console.log('load data')
         this.pm.getCurrentReport().then( report => {
             this.report = report;
+            let all_data =  this.report.getAllGrossGraphData();
+            this.options = {
+                title : {text : 'Income'},
+                series: all_data.series,
+                xAxis:{
+                    categories:all_data.labels
+                }
+            }
+            
         } )
+       
+
     }
 
     downloadCSV(){
@@ -87,4 +125,16 @@ export class PaymentsReportComponent implements OnInit {
         }
     }
 
+    createReport(){
+        if(confirm(PAYMENT.CREATE_REPORT_WARNING_MESSAGE))
+        {
+            console.log('create report na')
+            this.rs.createReport().then( report_key => {
+                console.log('done create report')
+                this.router.navigate(["/payment/list"])
+            })
+            
+        }       
+    }
+  
 }

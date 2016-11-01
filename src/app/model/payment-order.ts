@@ -50,8 +50,8 @@ export class PaymentOrder{
 
     public static load(payment_orders:any):PaymentOrder{
         let payment_order_items:Array<PaymentOrderItem> = []
-        console.log('load bro')
-        console.log(payment_orders)
+        //console.log('load bro')
+        //console.log(payment_orders)
         let result = new PaymentOrder()
         result.payment_order_items = [];
         payment_orders.forEach( payment_order => {

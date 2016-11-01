@@ -6,7 +6,10 @@ import { CoursesComponent, CoursesFormComponent, CoursesDetailComponent, Courses
 import { GroupComponent, GroupFormComponent } from "./group"
 import { CheckoutComponent } from "./checkout"
 import { CheckinComponent } from "./checkin"
-import { PaymentsMethodComponent, PaymentsTransferComponent,PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, PaymentsReportComponent } from "./payments"
+import { PaymentsMethodComponent, PaymentsTransferComponent,PaymentsThankyouComponent, PaymentsComponent, PaymentsListComponent, PaymentsDetailComponent, PaymentsReportComponent, PaymentReceiptComponent, PaymentsPaypalComponent} from "./payments"
+import { ReportComponent } from "./report/report.component"
+import { ReportDetailComponent } from "./report/report-detail.component"
+//test
 const appRoutes: Routes = [
   {
     path:'',
@@ -95,9 +98,25 @@ const appRoutes: Routes = [
     component:PaymentsTransferComponent
   },
   {
+    path:"payment/paypal",
+    component:PaymentsPaypalComponent
+  },
+  {
+    path:"payment/receipt/:key",
+    component:PaymentReceiptComponent
+  },
+  {
     path:"payment/:type/thankyou",
     component:PaymentsThankyouComponent
-  }
+  },
+  {
+    path:"report",
+    component:ReportComponent
+  },
+  {
+    path:"report/:key",
+    component:ReportDetailComponent
+  },
 
 //PaymentsListComponent
 ];

@@ -1,0 +1,7 @@
+<h2>Reports</h2>
+
+<ul>
+  <li *ngFor="let item of reports">
+    <a routerLink="./{{item.$key}}">{{item.$key | date}}</a>
+  </li>
+</ul>

@@ -44,4 +44,8 @@ export class LoginComponent implements OnInit {
     this.loginService.signup(this.email, this.password)
   }
 
+  facebookLogin(){
+    this.loginService.facebookLogin()
+  }
+
 }

@@ -1,0 +1,31 @@
+<section class="payments-transfer">
+    <div [innerHTML]="payment_type?.procedure"></div>
+    <table class="table table-striped">
+        <thead>
+            
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Option</th>
+            <th>Total</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of cart;">
+                
+                <td>{{item.name}}</td>
+                <td>{{item.quantity}}</td>
+                <td>{{item.reference}}</td>
+                <td>{{item.total}}</td>
+            </tr>
+            <tr>
+                <td colspan="3">Total</td>
+                <td>{{cartService.getTotal()}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        Show Sum of cart
+    </div>
+  
+
+
+</section>
