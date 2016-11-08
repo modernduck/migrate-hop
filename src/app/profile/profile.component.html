@@ -1,12 +1,42 @@
-<a routerLink="update">Edit</a>
+
 <div *ngIf="!(lg.currentUser | async)" class="profile">
   No info please Login
 </div>
 <div *ngIf="(lg.currentUser | async)" class="profile">
-Full Name : {{(lg.currentUser| async)?.fullname}}<br/>
-Nickname: {{(lg.currentUser| async)?.nickname}}<br/>
-Email : {{(lg.currentUser| async)?.email}}<br/>
-<img src="{{(lg.currentUser | async).picture}}"/>
 
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <img src="{{(lg.currentUser | async)?.picture}}"alt="" class="img-rounded img-responsive" />
+                    </div>
+                    <div class="col-sm-6 col-md-8">
+                        <h4>
+                           {{(lg.currentUser| async)?.fullname}} ({{(lg.currentUser| async)?.nickname}})</h4>
+                        <small><cite title="San Francisco, USA">{{(lg.currentUser| async)?.country}} </cite></small>
+                        <p>
+                           {{(lg.currentUser| async)?.email}}
+                            <br />
+                            <a href="tel:{{(lg.currentUser| async)?.phone}}">{{(lg.currentUser| async)?.phone}}</a>
+                            </p>
+                        <!-- Split button -->
+                        <div class="btn-group">
+                            <a routerLink="update" class="btn btn-primary">
+                                Edit</a>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
