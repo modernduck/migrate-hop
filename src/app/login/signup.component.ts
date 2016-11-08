@@ -9,7 +9,7 @@ import { LoginService } from '../login.service'
   
   selector: 'signup-box',
   template: `
-    Sign up
+    <h2>Sign up</h2>
     
      <div *ngIf="isHuman">
       <form (submit)="signup()">
@@ -18,26 +18,26 @@ import { LoginService } from '../login.service'
             Email
           </div>
           <div class="col-md-11">
-            <input type="email" name="email"  class="form-control" [(ngModel)]="email" />
+            <input type="email" name="email" placeholder="Email"  class="form-control" [(ngModel)]="email" />
           </div>
         </div>
         <div class="row">
           <div class="col-md-1">
-            Password<br/>
-            At least 8 Character
+            Password 
+            
           </div>
           <div class="col-md-11">
-            <input type="password" name="password"  class="form-control" [(ngModel)]="password" />
+            <input type="password" name="password" placeholder="At least 8 Character"  class="form-control" [(ngModel)]="password" />
 
           </div>
         </div>
         <div class="row">
           <div class="col-md-1">
-            Re Password<br/>
-            At least 8 Character
+            Reconfirm Password
+            
           </div>
           <div class="col-md-11">
-            <input type="password" name="repassword"  class="form-control" [(ngModel)]="repassword" />
+            <input type="password" name="repassword" placeholder="At least 8 Character"  class="form-control" [(ngModel)]="repassword" />
           </div>
         </div>
         <input type="submit" class="btn btn-primary form-control" />

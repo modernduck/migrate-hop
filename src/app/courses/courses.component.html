@@ -22,10 +22,10 @@
               <ul>
                 <li *ngFor="let excludeGroup of c.exclude | objectTrue2Array">{{ excludeGroup.$key |json }}</li>
               </ul>
-            </div>
+            </div>-->
             <div>
               By <courses-teacher [teacher]="c.teacher"></courses-teacher> .
-            </div>-->
+            </div>
           </td>
           <td><courses-day [daysNumber]="c.days"></courses-day> </td>
           <td>{{c.start_time}} - {{c.end_time}}</td>
@@ -35,3 +35,83 @@
         </tr>
     </tbody>
 </table>
+    <h2>Camp</h2>
+    <table class="table" style="margin-bottom:0px;">
+        <tr class="row">
+            <td class="col-md-6">
+              FULL PASS - Intermediate
+            </td>
+            
+              <td class="col-md-3">{{9500 | currency:'THB'}}</td>
+            
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+        <tr class="row">
+            <td class="col-md-6">
+              FULL PASS - Intermediate -  Advanced
+            </td>
+            
+              <td class="col-md-3">{{9500 | currency:'THB'}}</td>
+            
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+        <tr class="row">
+            <td class="col-md-6">
+              FULL PASS - Advanced
+            </td>
+            
+              <td class="col-md-3">{{9500 | currency:'THB'}}</td>
+            
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+        <tr class="row">
+            <td class="col-md-6">
+               FULL PASS - Solo Authentic Jazz
+            </td>
+            
+              <td class="col-md-3">{{9500 | currency:'THB'}}</td>
+            
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+
+    </table>
+    <p style="color:#ff0000"><i>Note: Intermediate - Advanced and Advanced levels will require audition</i></p>
+    <div style="height:19px;"></div>
+    <h2>Additional Class (Optional)</h2>
+    <table class="table">
+        <tr class="row">
+            <td class="col-md-6">Additional Solo Authentic Jazz workshop for 70 minutes</td>
+            <td class="col-md-3">{{900 | currency:'THB'}}</td>
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+
+    </table>
+    <h2>Bus (Optional)</h2>
+    <table class="table">
+        <tr class="row">
+            <td class="col-md-6">Bangkok to Sampran (Big Bang Camp)</td>
+            <td class="col-md-3">{{350 | currency:'THB'}}</td>
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+        <tr class="row">
+            <td class="col-md-6">Sampran (Big Bang Camp) to Bangkok</td>
+            <td class="col-md-3">{{350 | currency:'THB'}}</td>
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+
+    </table>
+
+     <h2>Jack and Jill (Optional)</h2>
+    <table class="table">
+        <tr class="row">
+            <td class="col-md-6">Sign up as Jack </td>
+            <td class="col-md-3">{{200 | currency:'THB'}}</td>
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+        <tr class="row">
+            <td class="col-md-6">Sign up as Jill</td>
+            <td class="col-md-3">{{200 | currency:'THB'}}</td>
+            <td class="col-md-3"><button class="btn btn-primary">ADD TO CART</button></td>
+        </tr>
+
+    </table>

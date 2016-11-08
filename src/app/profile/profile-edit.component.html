@@ -14,6 +14,10 @@
             <div class="col-md-8">{{(lg.currentUser | async).email}}</div>
         </div>
         <div class="row">
+            <div class="col-md-4">Gender</div>
+            <div class="col-md-8">{{(lg.currentUser | async).gender}}</div>
+        </div>
+        <div class="row">
             <div class="col-md-4">Picture </div>
             <div class="col-md-6"><img src="{{(lg.currentUser | async).picture}}"></div>
             <div class="col-md-2"><button (click)="upload()">Upload</button> </div>
