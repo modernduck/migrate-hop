@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from "../course.service"
 import { LoginService } from "../login.service"
+import 'rxjs/add/operator/take'
 
 @Component({
   

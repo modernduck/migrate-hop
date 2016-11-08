@@ -2,7 +2,7 @@
   My current payments
 
 </p>
-<div>
+<div *ngIf="user?.group.admin">
   <a routerLink="list">view all payment</a>
   <a routerLink="report">Create a report</a>
 </div>

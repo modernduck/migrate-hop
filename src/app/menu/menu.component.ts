@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../login.service'
+
+import 'rxjs/add/operator/take'
 
 
 @Component({
@@ -9,9 +12,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
   private isShowMenu=false;
-  constructor() { }
+  private user;
+  constructor(private lg:LoginService) { }
 
   ngOnInit() {
+    this.lg.promiseUser.then(user => {
+      user.user.take(1).subscribe( real_user => {
+        this.user = real_user
+        console.log(this.user)
+      })
+    } )
   }
 
 }

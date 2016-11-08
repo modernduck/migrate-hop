@@ -1,4 +1,4 @@
-<h2>Available Courses</h2> <a routerLink="./edit/new" class="btn btn-success">CREATE NEW</a>
+<h2>Available Courses</h2> <a routerLink="./edit/new" class="btn btn-success" *ngIf="user?.group.admin">CREATE NEW</a>
 <table class="table table-striped">
     <thead>
       <th>Name</th>
@@ -10,7 +10,7 @@
     </thead>
     <tbody>
        <tr *ngFor="let c of courses  | filterByAttribute:'public':true">
-          <td>{{c.name}} <span class="code">{{c.code}}</span> <a routerLink="edit/{{c.$key}}">EDIT</a>
+          <td>{{c.name}} <span class="code">{{c.code}}</span> <a routerLink="edit/{{c.$key}}"  *ngIf="user?.group.admin">EDIT</a>
             <div *ngIf="(c.require | objectTrue2Array).length > 0" >
               Require: 
               <ul>

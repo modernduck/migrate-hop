@@ -1,31 +1,34 @@
 <section class="payments-transfer">
     <div [innerHTML]="payment_type?.procedure"></div>
-    <table class="table table-striped">
-        <thead>
-            
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Option</th>
-            <th>Total</th>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of cart;">
-                
-                <td>{{item.name}}</td>
-                <td>{{item.quantity}}</td>
-                <td>{{item.reference}}</td>
-                <td>{{item.total}}</td>
-            </tr>
-            <tr>
-                <td colspan="3">Total</td>
-                <td>{{cartService.getTotal()}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <div>
-        Show Sum of cart
-    </div>
-  
+    Taking you to paypal please wait
+<div *ngIf="payment_type" style="display:none">
+  <form ngNoForm action="https://www.paypal.com/cgi-bin/webscr" method="post">
 
+  <!-- Identify your business so that you can collect the payments. -->
+  <input type="hidden" name="business" value="{{payment_type.account}}">
+
+  <!-- Specify a Buy Now button. -->
+  <input type="hidden" name="cmd" value="_cart">
+  <input type="hidden" name="upload" value="1">
+
+
+  <!-- Specify details about the item that buyers will purchase. -->
+  <div *ngFor="let item of cart;let i = index">
+        <input type="hidden" name="item_name_{{i + 1}}" value="{{item.name}}">
+        <input type="hidden" name="amount_{{i + 1}}" value="{{item.total}}">
+   </div>
+<input type="hidden" name="currency_code" value="{{payment_type.currency}}">
+<INPUT TYPE="hidden" NAME="return" value="{{payment_type.return_url}}">
+
+
+  <!-- Display the payment button. -->
+  <input type="image" name="submit" border="0"
+  src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_buynow_107x26.png"
+  alt="Buy Now">
+  <img alt="" border="0" width="1" height="1"
+  src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
+
+</form>
+</div>
 
 </section>
