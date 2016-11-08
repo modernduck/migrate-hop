@@ -64,7 +64,7 @@ export class LoginService {
             this.currentUserKey = this.user.uid
             this._isLogin = true;
             
-            var currentUser:FirebaseObjectObservable<any> = this.af.database.object(ROOT_PATH);
+            var currentUser:FirebaseObjectObservable<any> = this.af.database.object(ROOT_PATH + this.currentUserKey);
             var currentUserNotification:FirebaseObjectObservable<any> = this.af.database.object(ROOT_NOTIFCATION_PATH + this.currentUserKey);
             resolve(new PromiseUser(currentUser, currentUserNotification, this.currentUserKey))
             //new PromiseUser(this.af.database.object(ROOT_PATH), this.af.database.list(ROOT_NOTIFCATION_PATH + this.currentUserKey), this.currentUserKey)

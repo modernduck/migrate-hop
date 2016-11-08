@@ -28,12 +28,8 @@
 <h3>Select Payment Method</h3>
 
 <div class="payment-method {{type.style}} active-{{type.active}}" *ngFor="let type of (payment_types ) "  >
-    
-    <h5>{{type.name}}</h5>
-    <p>{{cartService.getTotal() + ( cartService.getTotal() * type.fee.percentage / 100  ) + type.fee.constant}}</p>
-    <p class="small">({{type.fee.percentage}} % + {{type.fee.constant}} ) </p>
     <div class='center '>
-        <button (click)="select(type)" class="btn btn-primary {{type.btn_style}}">SELECT</button>
+        <button (click)="select(type)" class="btn btn-primary {{type.btn_style}}">{{type.name}}</button>
     </div>
 </div>
 <div class="nav-bot">

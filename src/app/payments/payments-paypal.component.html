@@ -1,48 +1,24 @@
 <section class="payments-transfer">
-    <div [innerHTML]="payment_type?.procedure"></div>
-    <table class="table table-striped">
-        <thead>
-            
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Option</th>
-            <th>Total</th>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of cart;">
-                
-                <td>{{item.name}}</td>
-                <td>{{item.quantity}}</td>
-                <td>{{item.reference}}</td>
-                <td>{{item.total}}</td>
-            </tr>
-            <tr>
-                <td colspan="3">Total</td>
-                <td>{{cartService.getTotal()}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <div>
-        Show Sum of cart
-    </div>
-
-
-
-
+    Taking you to paypal please wait
+<div *ngIf="payment_type" style="display:none">
   <form ngNoForm action="https://www.paypal.com/cgi-bin/webscr" method="post">
 
+
   <!-- Identify your business so that you can collect the payments. -->
-  <input type="hidden" name="business" value="sompop.kulapalanont-facilitator@gmail.com">
+  <input type="hidden" name="business" value="{{payment_type.account}}">
 
   <!-- Specify a Buy Now button. -->
-  <input type="hidden" name="cmd" value="_xclick">
-  <input type="hidden" name="return" value="http://localhost:4200/payment/paypal/thankyou" />
-  <!-- Specify details about the item that buyers will purchase. -->
-  
-  <input type="hidden" name="item_name" value="beach ball">
-<input type="hidden" name="amount" value="1">
-<input type="hidden" name="currency_code" value="THB">
+  <input type="hidden" name="cmd" value="_cart">
+  <input type="hidden" name="upload" value="1">
 
+
+  <!-- Specify details about the item that buyers will purchase. -->
+  <div *ngFor="let item of cart;let i = index">
+        <input type="hidden" name="item_name_{{i + 1}}" value="{{item.name}}">
+        <input type="hidden" name="amount_{{i + 1}}" value="{{item.total}}">
+   </div>
+<input type="hidden" name="currency_code" value="{{payment_type.currency}}">
+<INPUT TYPE="hidden" NAME="return" value="{{payment_type.return_url}}">
 
 
   <!-- Display the payment button. -->
@@ -53,6 +29,6 @@
   src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
 
 </form>
-
+</div>
 
 </section>

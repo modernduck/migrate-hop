@@ -31,11 +31,6 @@ export class PaymentsPaypalComponent implements OnInit {
       this.lg.promiseUser.then(data =>{
           this.current_user_key = data.key;
           this.payment_transaction_key = this.paymentService.generateKey(this.current_user_key)
-          this.paymentService.getUploadReference(this.current_user_key).then(data=>{
-            console.log('upload ref' )
-            console.log(data)
-             this.upload_reference = data;
-          })
       })
       
   }
@@ -46,6 +41,12 @@ export class PaymentsPaypalComponent implements OnInit {
      
      this.paymentService.getType('paypal').subscribe(data => {
          this.payment_type = data;
+         window.setTimeout( () => {
+           let form = document.getElementsByTagName('form')[0]
+           form.submit()
+         },100)
+         
+         
      })
   }
 
