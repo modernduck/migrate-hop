@@ -86,8 +86,8 @@ export class LoginService {
    
     
    }
-  login(){
-     this.auth.login();
+  login(onReject:(error)=> void){
+     this.auth.login().catch(onReject);
    }
   isLogin(){
     return this._isLogin;
@@ -103,14 +103,14 @@ export class LoginService {
     })
   }
 
-  passwordLogin(email:string, password:string){
+  passwordLogin(email:string, password:string, onReject:any){
     this.auth.login({
         email:email,
         password:password
     },{
       provider: AuthProviders.Password,
       method: AuthMethods.Password,
-    })
+    }).catch( onReject )
   }
 
   facebookLogin(){

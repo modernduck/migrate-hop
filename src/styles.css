@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+html {
+    height:100%;
+}
+
+
+body {
+    background:url('assets/bg.login.jpg') no-repeat center center fixed; 
+    background-size: cover;
+    height: 100%;
+}
+
+@media (min-width: 1120px), (min-height: 630px) {
+    body { background-size: auto; }
+}
+
+.navbar-default{
+    background:none !important;
+    border:none !important;
+}
