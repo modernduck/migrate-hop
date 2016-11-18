@@ -98,7 +98,7 @@ export class SignupComponent implements OnInit {
   signup(){
     if(this.save()){
       alert(LOGIN.MESSAGE_REGISTRATION_COMPLETE)
-      this.router.navigate([''])
+      this.router.navigate(['/profile/edit'])
     }else
       alert(LOGIN.MESSAGE_REGISTRATION_FAILED)
   }

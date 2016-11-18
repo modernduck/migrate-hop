@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AngularFire, FirebaseObjectObservable, FirebaseAuth } from 'angularfire2';
 import { LoginService } from '../login.service'
+import 'rxjs/add/operator/take'
 
 @Component({
   
@@ -18,12 +19,17 @@ export class LoginComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.af.auth.subscribe(user => {
+    /*this.af.auth.subscribe(user => {
       if(user)
       {
         //when first time
         this.router.navigate(["/profile/update"])
       }
+    })*/
+    this.loginService.promiseUser.then( pu => {
+      //pu.user
+
+      this.router.navigate(["courses"])
     })
   }
 
@@ -34,11 +40,17 @@ export class LoginComponent implements OnInit {
   
 
   login(){
-    this.loginService.login()
+    this.loginService.login(error => {
+      alert("Some thing off")
+      console.log(error)
+    })
   }
 
   passwordLogin(){
-    this.loginService.passwordLogin(this.email, this.password);
+    this.loginService.passwordLogin(this.email, this.password, error => {
+      alert("Some thing off")
+      console.log(error)
+    });
   }
 
   signup(){

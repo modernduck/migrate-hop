@@ -1,0 +1,10 @@
+.main-app.container{
+    min-height:100%;
+    padding-bottom:20px;
+    
+
+}
+
+.main-app.container.white-true{
+    background: white;
+}

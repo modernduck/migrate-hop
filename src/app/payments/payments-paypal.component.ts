@@ -41,10 +41,10 @@ export class PaymentsPaypalComponent implements OnInit {
      
      this.paymentService.getType('paypal').subscribe(data => {
          this.payment_type = data;
-         window.setTimeout( () => {
+         /*window.setTimeout( () => {
            let form = document.getElementsByTagName('form')[0]
            form.submit()
-         },100)
+         },100)*/
          
          
      })
