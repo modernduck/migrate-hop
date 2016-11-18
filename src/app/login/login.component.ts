@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
     this.af.auth.subscribe(user => {
       if(user)
       {
-        this.router.navigate(["/profile"])
+        //when first time
+        this.router.navigate(["/profile/update"])
       }
     })
   }

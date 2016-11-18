@@ -11,32 +11,32 @@ import { LoginService } from '../login.service'
   template: `
     <h2>Sign up</h2>
     
-     <div *ngIf="isHuman">
+     <div *ngIf="isHuman"  style="width:550px;margin-left:auto;margin-right:auto;">
       <form (submit)="signup()">
         <div class="row">
-          <div class="col-md-1">
+          <div class="col-md-3">
             Email
           </div>
-          <div class="col-md-11">
+          <div class="col-md-9">
             <input type="email" name="email" placeholder="Email"  class="form-control" [(ngModel)]="email" />
           </div>
         </div>
         <div class="row">
-          <div class="col-md-1">
+          <div class="col-md-3">
             Password 
             
           </div>
-          <div class="col-md-11">
+          <div class="col-md-9">
             <input type="password" name="password" placeholder="At least 8 Character"  class="form-control" [(ngModel)]="password" />
 
           </div>
         </div>
         <div class="row">
-          <div class="col-md-1">
+          <div class="col-md-3">
             Reconfirm Password
             
           </div>
-          <div class="col-md-11">
+          <div class="col-md-9">
             <input type="password" name="repassword" placeholder="At least 8 Character"  class="form-control" [(ngModel)]="repassword" />
           </div>
         </div>
@@ -47,7 +47,9 @@ import { LoginService } from '../login.service'
      <div *ngIf="!isHuman">
       {{robotMsg}}
      </div>
-     <re-captcha (captchaResponse)="handleCorrectCaptcha()"  site_key="{{key}}"></re-captcha>
+      <div  style="width:550px;margin-left:auto;margin-right:auto;">
+        <re-captcha (captchaResponse)="handleCorrectCaptcha()"  site_key="{{key}}"></re-captcha>
+      </div>
   `,
   styleUrls: ['login.component.css']
 })

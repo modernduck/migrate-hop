@@ -1,22 +1,23 @@
-<a routerLink="..">Back</a>
+<section class="profile-edit">
+
 <div *ngIf="(lg.currentUser | async)" class="profile">
     <div class="form">
         <div class="row">
-            <div class="col-md-4">Full Name</div>
-            <div class="col-md-8"><input type="text" class="form-control" [(ngModel)]="fullname"  value="{{(lg.currentUser | async).fullname}}"></div>
+            <div class="col-md-4">First Name <span style="color:red;">*</span> </div>
+            <div class="col-md-8"><input type="text" required placeholder="eg. Frankie" class="form-control" [(ngModel)]="firstname"  value="{{(lg.currentUser | async).firstname}}"></div>
         </div>
         <div class="row">
-            <div class="col-md-4">Nick Name</div>
-            <div class="col-md-8"><input type="text" placeholder="eg. Jimmy" class="form-control" [(ngModel)]="nickname" value="{{(lg.currentUser | async).nickname}}"></div>
+            <div class="col-md-4">Last Name <span style="color:red;">*</span></div>
+            <div class="col-md-8"><input type="text" required placeholder="eg. Manning" class="form-control" [(ngModel)]="lastname" value="{{(lg.currentUser | async).lastname}}"></div>
         </div>
         <div class="row">
             <div class="col-md-4">Mobile Phone</div>
             <div class="col-md-8"><input type="text" placeholder="eg. 082-452-2222" class="form-control" [(ngModel)]="phone" value="{{(lg.currentUser | async).phone}}"></div>
         </div>
         <div class="row">
-            <div class="col-md-4">Country</div>
+            <div class="col-md-4">Country <span style="color:red;">*</span></div>
             <div class="col-md-8">
-                <select class="form-control" [(ngModel)]="country" value="{{(lg.currentUser | async).country}}">
+                <select class="form-control" required [(ngModel)]="country" value="{{(lg.currentUser | async).country}}">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Åland Islands</option>
                     <option value="AL">Albania</option>
@@ -274,8 +275,14 @@
             <div class="col-md-8">{{(lg.currentUser | async).email}}</div>
         </div>
         <div class="row">
-            <div class="col-md-4">Gender</div>
-            <div class="col-md-8">{{(lg.currentUser | async).gender}}</div>
+            <div class="col-md-4">Gender <span style="color:red;">*</span></div>
+            <div class="col-md-8">
+                  <select class="form-control" required [(ngModel)]="gender" value="{{(lg.currentUser | async).gender}}">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+
+            </div>
         </div>
         <div class="row">
             <div class="col-md-4">Picture </div>
@@ -285,6 +292,10 @@
         </div>
 
     </div>
-    <button class="btn btn-primary btn-lg" (click)="save()">Save</button>
+    <div>
+        <a routerLink=".." class="btn btn-primary btn-lg pull-left">Back</a>
+        <button class="btn btn-primary btn-lg pull-right" (click)="save()">Save</button>
+    </div>
 
 </div>
+</section>

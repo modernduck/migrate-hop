@@ -1,5 +1,5 @@
-<h2>Available Courses</h2> <a routerLink="./edit/new" class="btn btn-success" *ngIf="user?.group.admin">CREATE NEW</a>
-<table class="table table-striped">
+<h2 *ngIf="(courses  | filterByAttribute:'public':true | filterByType:'course').length > 0">Available Courses</h2> <a routerLink="./edit/new" class="btn btn-success" *ngIf="user?.group.admin">CREATE NEW</a>
+<table class="table table-striped" *ngIf="(courses  | filterByAttribute:'public':true | filterByType:'course').length > 0">
     <thead>
       <th>Name</th>
       <th>Day(s)</th>
@@ -9,7 +9,7 @@
       <th></th>
     </thead>
     <tbody>
-       <tr *ngFor="let c of courses  | filterByAttribute:'public':true">
+       <tr *ngFor="let c of courses  | filterByAttribute:'public':true | filterByType:'course'">
           <td>{{c.name}} <span class="code">{{c.code}}</span> <a routerLink="edit/{{c.$key}}"  *ngIf="user?.group.admin">EDIT</a>
             <div *ngIf="(c.require | objectTrue2Array).length > 0" >
               Require: 
