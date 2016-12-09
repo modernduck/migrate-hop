@@ -12,6 +12,7 @@ import 'rxjs/add/operator/take'
 })
 export class MenuComponent implements OnInit {
   private isShowMenu=false;
+  private isShow =false;
   private user;
   constructor(private lg:LoginService) { }
 
@@ -19,6 +20,7 @@ export class MenuComponent implements OnInit {
     this.lg.promiseUser.then(user => {
       user.user.take(1).subscribe( real_user => {
         this.user = real_user
+        this.isShow = true;
         console.log(this.user)
       })
     } )

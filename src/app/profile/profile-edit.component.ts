@@ -15,6 +15,8 @@ export class ProfileEditComponent implements OnInit {
 
   private uploadEvent
   private fullname;
+  private firstname;
+  private lastname;
   private nickname;
   private pictureUrl;
   private country;
@@ -29,8 +31,8 @@ export class ProfileEditComponent implements OnInit {
     //this.fullname = this.lg.currentUser.fullname
     
     this.lg.getCurrentUser(data=>{
-      this.fullname = data.fullname;
-      this.nickname = data.nickname;
+      this.firstname = data.firstname
+      this.lastname = data.lastname;
       this.pictureUrl = data.picture
       this._group = data.group
       this.country = data.country;
@@ -62,8 +64,8 @@ export class ProfileEditComponent implements OnInit {
     /*this.lg.currentUser.update({fullname:this.fullname, nickname:this.nickname}).then( ()=>{
          this.router.navigate(['profile'])
     } )*/
-    this.userService.updateUser(this.lg.currentUserKey, {fullname:this.fullname, nickname:this.nickname, group:this._group, country:this.country, phone:this.phone}).then(() =>{
-      this.router.navigate(['profile'])
+    this.userService.updateUser(this.lg.currentUserKey, {firstname:this.firstname, lastname:this.lastname, group:this._group, country:this.country, phone:this.phone}).then(() =>{
+      this.router.navigate(['courses'])
     })
     
     

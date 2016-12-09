@@ -11,22 +11,22 @@
       <th>#</th>
       <th>Type</th>
       <th>Amount</th>
-      <th>Status</th>
+      
       <th>Transfer Date</th>
       <th>Transfer Time</th>
-      <th></th>
+      <th>Status</th>
     </thead>
     <tbody>
       <tr *ngFor="let item of payments">
         <td>{{item.$key}}</td>
         <td>{{item.payment_type}}</td>
         <td>{{item.total}}</td>
-        <td>{{item.status}}</td>
+        
         <td>{{item.transfer_date | date}}</td>
         <td>{{item.transfer_time }}</td>
         <td>
-          <button class="btn btn-success" (click)="download(item)">DOWNLOAD</button> 
-          <div *ngIf="item.canCancel()"><br/>
+          {{item.status}}  
+          <div *ngIf="item.canCancel()">
             <button class="btn btn-danger" (click)="cancel(item)">CANCEL</button>
           </div>
         </td>

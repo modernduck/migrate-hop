@@ -1,5 +1,5 @@
-<h2>Available Courses</h2> <a routerLink="./edit/new" class="btn btn-success" *ngIf="user?.group.admin">CREATE NEW</a>
-<table class="table table-striped">
+<h2 *ngIf="(courses  | filterByAttribute:'public':true | filterByType:'course').length > 0">Available Courses</h2> <a routerLink="./edit/new" class="btn btn-success" *ngIf="user?.group.admin">CREATE NEW</a>
+<table class="table table-striped" *ngIf="(courses  | filterByAttribute:'public':true | filterByType:'course').length > 0">
     <thead>
       <th>Name</th>
       <th>Day(s)</th>
@@ -9,8 +9,13 @@
       <th></th>
     </thead>
     <tbody>
-       <tr *ngFor="let c of courses  | filterByAttribute:'public':true">
+<<<<<<< HEAD
+       <tr *ngFor="let c of courses  | filterByAttribute:'public':true | filterByType:'course'">
           <td>{{c.name}} <span class="code">{{c.code}}</span> <a routerLink="edit/{{c.$key}}"  *ngIf="user?.group.admin">EDIT</a>
+=======
+       <tr *ngFor="let c of courses  | filterByAttribute:'public':true">
+          <td>{{c.name}} <a routerLink="edit/{{c.$key}}"  *ngIf="user?.group.admin">EDIT</a>
+>>>>>>> 8301937ef1384c9a2d1e3c9eabb105cf92c2ee8a
             <div *ngIf="(c.require | objectTrue2Array).length > 0" >
               Require: 
               <ul>
@@ -22,10 +27,10 @@
               <ul>
                 <li *ngFor="let excludeGroup of c.exclude | objectTrue2Array">{{ excludeGroup.$key |json }}</li>
               </ul>
-            </div>
+            </div>-->
             <div>
               By <courses-teacher [teacher]="c.teacher"></courses-teacher> .
-            </div>-->
+            </div>
           </td>
           <td><courses-day [daysNumber]="c.days"></courses-day> </td>
           <td>{{c.start_time}} - {{c.end_time}}</td>
@@ -35,3 +40,4 @@
         </tr>
     </tbody>
 </table>
+   

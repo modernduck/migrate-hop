@@ -17,3 +17,17 @@ export class DaysNumber2ObjectPipe implements PipeTransform {
   }
 }
 
+@Pipe({name: 'filterByType'})
+export class FilterByTypePipe implements PipeTransform {
+  transform(courses:Array<any>, type:string ): any{
+    
+        return courses.filter( course => {
+          return course.type[type]
+        })
+
+        //return CourseService.daysToObject(days)
+    
+  }
+}
+
+

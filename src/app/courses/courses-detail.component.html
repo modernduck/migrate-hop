@@ -1,6 +1,7 @@
 <section class="course-detail" *ngIf="course">
     <div class="col-md-6">
-        <h2>{{course.name}}</h2>
+        <h2>{{course.name}} </h2>
+        <span class="code">{{course.code}}</span><br/><br/>
         <p>{{course.description}}</p>
         <div class="when">
            <p> Start from {{course.start_date | date}} to {{course.end_date | date}}</p>

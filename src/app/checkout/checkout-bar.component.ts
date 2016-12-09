@@ -7,7 +7,7 @@ import { Router } from "@angular/router"
   selector: 'checkout-bar',
   template: `
      <div class="checkout-bar">
-        <a *ngIf="isShow" class=" btn btn-primary" routerLink="/checkout">Check Out</a>
+        <a *ngIf="isShow" class=" btn btn-danger" routerLink="/checkout">Check Out</a>
     </div>
   `,
   styleUrls: ['checkout.component.css']

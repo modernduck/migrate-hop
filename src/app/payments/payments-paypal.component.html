@@ -1,8 +1,8 @@
 <section class="payments-transfer">
-    <div [innerHTML]="payment_type?.procedure"></div>
     Taking you to paypal please wait
-<div *ngIf="payment_type" style="display:none">
-  <form ngNoForm action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<div *ngIf="payment_type">
+  <form ngNoForm action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+
 
   <!-- Identify your business so that you can collect the payments. -->
   <input type="hidden" name="business" value="{{payment_type.account}}">
@@ -19,6 +19,7 @@
    </div>
 <input type="hidden" name="currency_code" value="{{payment_type.currency}}">
 <INPUT TYPE="hidden" NAME="return" value="{{payment_type.return_url}}">
+<INPUT TYPE="hidden" NAME="notify_url" value="{{payment_type.notify_url}}">
 
 
   <!-- Display the payment button. -->
