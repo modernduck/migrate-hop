@@ -5,6 +5,7 @@ import 'rxjs/add/operator/take'
 import {  Report } from "./model/report"
 import { CourseService } from "./course.service"
 import { PaymentService } from "./payment.service"
+
 import {  PaymentTransaction, PaymentTransfer } from "./model/payment-transaction"
 
 const ROOT_PATH = "report/"
@@ -14,7 +15,7 @@ const PAYMENT_STATUS_PATH = "payment_transactions_status/"
 @Injectable()
 export class ReportService {
 
-  constructor(private af:AngularFire, private paymentService:PaymentService) { }
+  constructor(private af:AngularFire, private paymentService:PaymentService, private courseService:CourseService) { }
 
   //move all completed transaction to archive 
   //and create report table that point to the set of these transaction
@@ -50,6 +51,52 @@ export class ReportService {
 
   listReport(){
       return this.af.database.list(INDEX_PATH)
+  }
+
+  convertReportToOverview(report:Report):Promise<any>{
+    let overViewPromise = new Promise<any>( (resolve, reject) => {
+       let overviews = {};
+       let countTime = 0;
+       
+        report.items.forEach( item =>{
+          let courseGet = new Promise<any> ( (resolveC, rejectC) =>{
+            if(overviews[item.course_key]){
+              resolveC(false)
+            }else
+              this.courseService.getCourse(item.course_key).take(1).subscribe( course =>{
+                resolveC(course)
+            })
+          } )
+          courseGet.then( result => {
+            if(result){
+              overviews[item.course_key] = {
+                  class_name:result.name,
+                  class_code:result.code, 
+                  teacher:result.teacher,
+                  total:0
+               }
+            }
+
+            countTime++;
+            if(countTime == report.items.length)
+            {
+              
+
+              resolve(overviews)
+            }
+              
+          })
+
+
+
+
+          
+          
+        })
+        
+    })
+   
+    return overViewPromise
   }
 
   getReport(key:string){

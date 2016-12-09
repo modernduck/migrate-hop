@@ -5,6 +5,7 @@ import { PAYMENT } from "../config/payment"
 import { PaymentService } from "../payment.service"
 import { ReportService } from "../report.service"
 import { UploadService } from "../upload.service"
+import { CourseService } from "../course.service"
 import { ActivatedRoute, Params, Router } from "@angular/router"
 @Component({
   
@@ -16,6 +17,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
   <!--<div class="row">
     <div class="col-md-12" ><chart [options]="options" style="width:800px;" ></chart></div>
   </div>-->
+
   <div class="row">
    Payment <select>
         <option>All</option>
@@ -25,6 +27,28 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
     From <input type="date" />
     To <input type="date" />
   </div>
+  <h4>Overview</h4>
+  <table class="table">
+    <thead>
+        <th>Class</th>
+        <th>Code</th>
+        <th>Instuctor</th>
+        <th>Total Paid</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of reportOverviews">
+            <td>{{item.class_name}}</td>
+            <td>{{item.class_code}}</td>
+            <td>{{item.teacher}}</td>
+            <td>{{item.total}}</td>
+        </tr>
+    </tbody>
+  </table>
+  
+
+
+
+  <h4>Each Data</h4>
   <table class="table table-striped" *ngIf='report'>
     <thead>
         <th>Reference Order.</th>
@@ -68,7 +92,8 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
 export class PaymentsReportComponent implements OnInit {
     private report:Report;
     private options = {};
-    constructor(private pm:PaymentService, private router:Router, private rs:ReportService){
+    private reportOverviews= [];
+    constructor(private pm:PaymentService, private router:Router, private rs:ReportService, private courseService:CourseService){
 
     }
 
@@ -83,8 +108,20 @@ export class PaymentsReportComponent implements OnInit {
 
     ngOnInit(){
         console.log('load data')
+        
         this.pm.getCurrentReport().then( report => {
+            this.reportOverviews = [];
             this.report = report;
+            this.rs.convertReportToOverview(this.report).then(overviews =>{
+                console.log('---------overviews')
+                console.log(overviews)
+                for(var key in overviews)
+                {
+                    this.reportOverviews.push(overviews[key])
+                }
+                
+            })
+            console.log(this.report)
             let all_data =  this.report.getAllGrossGraphData();
             this.options = {
                 title : {text : 'Income'},
