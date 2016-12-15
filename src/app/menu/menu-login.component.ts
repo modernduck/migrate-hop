@@ -6,7 +6,7 @@ import { AngularFire, FirebaseObjectObservable, FirebaseAuth } from 'angularfire
 @Component({
   
   selector: '[login-menu]',
-  template: '<a routerLink="logout" *ngIf="loginService.isLogin()">Log Out</a>',
+  template: '<a routerLink="logout" >Log Out</a>',
   
 })
 export class MenuLoginComponent implements OnInit {

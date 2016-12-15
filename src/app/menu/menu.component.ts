@@ -17,13 +17,21 @@ export class MenuComponent implements OnInit {
   constructor(private lg:LoginService) { }
 
   ngOnInit() {
-    this.lg.promiseUser.then(user => {
-      user.user.take(1).subscribe( real_user => {
-        this.user = real_user
+    this.lg.auth.subscribe( state => {
+      console.log('state change : menu')
+      console.log(state)
+      if(state && state.uid)
+       this.lg.refreshPromise().then( pu => {
         this.isShow = true;
-        console.log(this.user)
+        this.user = pu.info
       })
-    } )
+    else
+      this.isShow = false;
+    }, err => {}, () =>{
+      console.log('login complete')
+     
+    })
+    
   }
 
 }

@@ -18,18 +18,34 @@ export class LoginComponent implements OnInit {
      
    }
 
+   checkNavigate(){
+     
+     this.loginService.refreshPromise().then( (data)=>{
+       if(data.isNew())
+       {
+         this.router.navigate(["/profile/update"])
+       }else
+       {
+         this.router.navigate(["/courses"])
+       }
+     });
+   }
+
   ngOnInit() {
-    /*this.af.auth.subscribe(user => {
-      if(user)
-      {
-        //when first time
-        this.router.navigate(["/profile/update"])
-      }
-    })*/
+    
     this.loginService.promiseUser.then( pu => {
       //pu.user
-
-      this.router.navigate(["courses"])
+      
+       if(pu.isNew())
+        this.loginService.refreshPromise().then( (data)=>{
+          console.log('before naviate')
+          console.log(data)
+          this.router.navigate(["/profile/update"])
+        })
+        else if(!pu.isGuest())
+          this.router.navigate(["/courses"])
+        
+        
     })
   }
 
@@ -43,6 +59,9 @@ export class LoginComponent implements OnInit {
     this.loginService.login(error => {
       alert("Some thing off")
       console.log(error)
+    }).then(state => {
+      
+      this.checkNavigate()
     })
   }
 
@@ -50,6 +69,9 @@ export class LoginComponent implements OnInit {
     this.loginService.passwordLogin(this.email, this.password, error => {
       alert("Some thing off")
       console.log(error)
+    }).then(state => {
+     this.checkNavigate()
+      
     });
   }
 
@@ -58,7 +80,10 @@ export class LoginComponent implements OnInit {
   }
 
   facebookLogin(){
-    this.loginService.facebookLogin()
+    this.loginService.facebookLogin().then(state => {
+     this.checkNavigate()
+      
+    })
   }
 
 }

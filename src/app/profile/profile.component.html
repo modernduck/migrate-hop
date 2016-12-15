@@ -18,7 +18,7 @@
                     </div>
                     <div class="col-sm-6 col-md-8">
                         <h4>
-                           {{(lg.currentUser| async)?.fullname}} ({{(lg.currentUser| async)?.nickname}})</h4>
+                           {{(lg.currentUser| async)?.firstname}} {{(lg.currentUser| async)?.lastname}}</h4>
                         <small><cite title="San Francisco, USA">{{(lg.currentUser| async)?.country}} </cite></small>
                         <p>
                            {{(lg.currentUser| async)?.email}}

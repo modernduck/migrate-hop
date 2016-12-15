@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from "../course.service"
 import { LoginService } from "../login.service"
+import { Router } from '@angular/router'
+import {  MESSAGES } from "../config/messages"
 import 'rxjs/add/operator/take'
 
 @Component({
@@ -16,26 +18,35 @@ export class CoursesComponent implements OnInit {
   private ckeditorContent;
   private enroll_course;
   private pending_course
-  constructor(private courseService:CourseService, private lg:LoginService) { }
+  constructor(private courseService:CourseService, private lg:LoginService,  private router: Router) { }
 
   ngOnInit() {
      this.courseService.getAllCourses().subscribe(data => {
        this.courses = data
      })
-    this.lg.getCurrentUser(user=>{
-      this.user = user;
-      this.currentGroup = user.group
-      this.courseService.getEnrollCourses(user.$key).subscribe(courses=>{
-        console.log(courses)
-        this.enroll_course = courses;
-      })
-      this.courseService.getPendingCourses(user.$key).subscribe(cc=>{
-        //console.log('===pending')
-        //console.log(cc)
-        this.pending_course = cc
-      });
-      //console.log(user.$key)
-    })
+
+
+     this.lg.promiseUser.then(pu => {
+       this.user = pu.info 
+       if(pu.isNew()){
+         alert(MESSAGES.PROFILE.PLEASE_FILL_INFO)
+         this.router.navigate(['profile/update'])
+       }
+        
+
+
+       this.currentGroup = this.user.group
+        this.courseService.getEnrollCourses(this.user.$key).subscribe(courses=>{
+          console.log(courses)
+          this.enroll_course = courses;
+        })
+        this.courseService.getPendingCourses(this.user.$key).subscribe(cc=>{
+          
+          this.pending_course = cc
+        });
+     })
+
+   
   }
 
 }

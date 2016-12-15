@@ -9,13 +9,8 @@
       <th></th>
     </thead>
     <tbody>
-<<<<<<< HEAD
-       <tr *ngFor="let c of courses  | filterByAttribute:'public':true | filterByType:'course'">
-          <td>{{c.name}} <span class="code">{{c.code}}</span> <a routerLink="edit/{{c.$key}}"  *ngIf="user?.group.admin">EDIT</a>
-=======
        <tr *ngFor="let c of courses  | filterByAttribute:'public':true">
           <td>{{c.name}} <a routerLink="edit/{{c.$key}}"  *ngIf="user?.group.admin">EDIT</a>
->>>>>>> 8301937ef1384c9a2d1e3c9eabb105cf92c2ee8a
             <div *ngIf="(c.require | objectTrue2Array).length > 0" >
               Require: 
               <ul>

@@ -16,7 +16,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
   <button (click)="createReport()" class="btn btn-primary"> Create A Report</button>
   <!--<div class="row">
     <div class="col-md-12" ><chart [options]="options" style="width:800px;" ></chart></div>
-  </div>-->
+  </div>
 
   <div class="row">
    Payment <select>
@@ -26,7 +26,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
     </select>
     From <input type="date" />
     To <input type="date" />
-  </div>
+  </div>-->
   <h4>Overview</h4>
   <table class="table">
     <thead>
@@ -40,7 +40,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router"
             <td>{{item.class_name}}</td>
             <td>{{item.class_code}}</td>
             <td>{{item.teacher}}</td>
-            <td>{{item.total}}</td>
+            <td>{{item.total | number}}</td>
         </tr>
     </tbody>
   </table>

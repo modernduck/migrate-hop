@@ -30,11 +30,14 @@ export class CoursesDetailComponent implements OnInit {
             this.course = c;
             this.canRegister = !this.cartService.isAddCourse(this.course_key)
              //load current group
-            this.lg.getCurrentUser(user=>{
+             this.lg.currentUser.subscribe( user => {
+                 this.isQualify = CourseService.canJoin(this.course, user)
+             })
+            /*this.lg.getCurrentUser(user=>{
               //this.currentGroup = user.group
-              this.isQualify = CourseService.canJoin(this.course, user)
+            
 
-            })
+            })*/
         })
       })
     this.cart = this.cartService.getCart();
@@ -56,7 +59,8 @@ export class CoursesDetailComponent implements OnInit {
   requestToJoin(){
 //    this.courseService.requestToJoin(this.course_key, )
 //console.log(this.lg.getCurrentUser)
-    this.lg.getCurrentUser(user=>{
+    this.lg.currentUser.subscribe( user => {
+    //this.lg.getCurrentUser(user=>{
       this.courseService.requestToJoin(this.course, user)
     })
   }

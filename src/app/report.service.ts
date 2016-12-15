@@ -80,7 +80,9 @@ export class ReportService {
             countTime++;
             if(countTime == report.items.length)
             {
-              
+              report.items.forEach( t => {
+                overviews[t.course_key].total += t.amount;
+              })
 
               resolve(overviews)
             }

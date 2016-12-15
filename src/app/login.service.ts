@@ -30,27 +30,56 @@ export class LoginService {
     }
   }
 
-  private fetchInfo ( uid )
+  private fetchInfo ( uid ) :Promise<any>
   {
     
-    this.info = this.af.database.object('users/' + uid)
-    this.info.subscribe(data=>{
-       
-      if(typeof data.email == "undefined")
-      {
-        //if new new do this
-        this.userService.isTempUser(this.user.auth.email).then(is_temp_user =>{
-          if(!is_temp_user)
-            this.userService.setUser(uid, this.userService.getNewGoogleUser(this.user.auth))
-          else
-            this.userService.moveTempUser(uid, this.user.auth.email)
+    let userInfo = new Promise<any>( (resolve, reject) => {
+      console.log('fetching : ' + 'users/' + uid)
+       this.info = this.af.database.object('users/' + uid)
+        this.info.subscribe(data=>{
+          console.log('get fretch')
+          console.log(data)
+          if(typeof data.email == "undefined")
+          {
+            //if new new do this
+            this.userService.isTempUser(this.user.auth.email).then(is_temp_user =>{
+              if(!is_temp_user)
+                this.userService.setUser(uid, this.userService.getNewGoogleUser(this.user.auth))
+              else
+                this.userService.moveTempUser(uid, this.user.auth.email)
+            })
+            
+            
+          }
+          resolve(data)
+          
         })
-        
-        
-      }
-      
-      
     })
+   return userInfo;
+  }
+
+  refreshPromise() :Promise<PromiseUser> {
+    this.promiseUser = new Promise<PromiseUser>((resolve, reject) =>{
+        this.af.auth.take(1).subscribe(user=>{
+            this.user = user;
+          
+          
+          
+            this.currentUserKey = user.uid
+            console.log('should work' + this.currentUserKey )
+              var currentUser:FirebaseObjectObservable<any> = this.af.database.object(ROOT_PATH + this.currentUserKey);
+              var currentUserNotification:FirebaseObjectObservable<any> = this.af.database.object(ROOT_NOTIFCATION_PATH + this.currentUserKey);
+              this.fetchInfo(user.uid).then(info => {
+                  console.log('should resolve')
+                  resolve(new PromiseUser(currentUser, currentUserNotification, this.currentUserKey, info))
+                })
+          
+          
+
+        });
+
+    });
+    return this.promiseUser;
   }
 
   constructor(private af: AngularFire,public auth: FirebaseAuth, private userService:UserService) {
@@ -61,16 +90,21 @@ export class LoginService {
           if(user)
           {
             this.user = user;
-            this.currentUserKey = this.user.uid
-            this._isLogin = true;
             
+            this._isLogin = true;
+            this.currentUserKey = this.user.uid
             var currentUser:FirebaseObjectObservable<any> = this.af.database.object(ROOT_PATH + this.currentUserKey);
             var currentUserNotification:FirebaseObjectObservable<any> = this.af.database.object(ROOT_NOTIFCATION_PATH + this.currentUserKey);
-            resolve(new PromiseUser(currentUser, currentUserNotification, this.currentUserKey))
+            
             //new PromiseUser(this.af.database.object(ROOT_PATH), this.af.database.list(ROOT_NOTIFCATION_PATH + this.currentUserKey), this.currentUserKey)
 
             this.currentUser =this.userService.getUser(this.user.uid)
-            this.fetchInfo(user.uid)
+            this.fetchInfo(user.uid).then(info => {
+              if(resolve)
+                resolve(new PromiseUser(currentUser, currentUserNotification, this.currentUserKey, info))
+            })
+            
+            
           }else
           {
 
@@ -86,8 +120,10 @@ export class LoginService {
    
     
    }
-  login(onReject:(error)=> void){
-     this.auth.login().catch(onReject);
+  login(onReject:(error)=> void):firebase.Promise<FirebaseAuthState>{
+     let result =  this.auth.login()
+     result.catch(onReject);
+     return result;
    }
   isLogin(){
     return this._isLogin;
@@ -103,25 +139,27 @@ export class LoginService {
     })
   }
 
-  passwordLogin(email:string, password:string, onReject:any){
-    this.auth.login({
+  passwordLogin(email:string, password:string, onReject:any):firebase.Promise<FirebaseAuthState>{
+    let result = this.auth.login({
         email:email,
         password:password
     },{
       provider: AuthProviders.Password,
       method: AuthMethods.Password,
-    }).catch( onReject )
+    })
+    result.catch( onReject )
+    return result;
   }
 
-  facebookLogin(){
-    this.auth.login({
+  facebookLogin():firebase.Promise<FirebaseAuthState>{
+    return this.auth.login({
       provider:AuthProviders.Facebook,
       method:AuthMethods.Redirect
     })
   }
 
 
-  getCurrentUser(callback)
+ /* getCurrentUser(callback)
   {
     this.af.auth.subscribe(user=>{
       if(user)
@@ -134,6 +172,6 @@ export class LoginService {
     });
      
 
-  }
+  }*/
 
 }

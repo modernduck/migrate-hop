@@ -19,12 +19,13 @@ export class LogoutComponent implements OnInit {
 
   ngOnInit() {
     this.loginService.logout()
-    this.af.auth.subscribe(user => {
-      if(!user)
-      {
-        this.router.navigate([""])
-      }
+    this.auth.subscribe(state => {
+        this.loginService.refreshPromise().then( () =>{
+          this.router.navigate(['/login'])
+        })
+        
     })
+    
   }
 
 

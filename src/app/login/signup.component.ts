@@ -70,7 +70,12 @@ export class SignupComponent implements OnInit {
     this.af.auth.subscribe(user => {
       if(user)
       {
-        this.router.navigate(["/profile"])
+        this.loginService.refreshPromise().then( (data)=>{
+          console.log('before naviate')
+          console.log(data)
+          this.router.navigate(["/profile/update"])
+        })
+        
       }
     })
   }
@@ -98,7 +103,7 @@ export class SignupComponent implements OnInit {
   signup(){
     if(this.save()){
       alert(LOGIN.MESSAGE_REGISTRATION_COMPLETE)
-      this.router.navigate(['/profile/edit'])
+      
     }else
       alert(LOGIN.MESSAGE_REGISTRATION_FAILED)
   }

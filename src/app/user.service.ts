@@ -23,8 +23,8 @@ export class UserService {
   {
     return {
       "email": userAuth.email,
-      "nickname":userAuth.displayName?userAuth.displayName:userAuth.email,
-      "fullname":userAuth.displayName?userAuth.displayName:userAuth.email,
+      "firstname":userAuth.displayName?userAuth.displayName:userAuth.email,
+      "lastname":userAuth.displayName?userAuth.displayName:userAuth.email,
       "picture":userAuth.photoURL,
       "group":this.getDefaultGroup()
 
@@ -36,10 +36,13 @@ export class UserService {
     for(let group_name in user.group)
     {
       
+      console.log('target:' + MEMBER_GROUP_PATH +group_name +"/" + user_key)
       if( user.group[group_name])
       {
-        
-        this.af.database.object(MEMBER_GROUP_PATH +group_name +"/" + user_key).set(user.nickname)
+        if(user.firstname)
+          this.af.database.object(MEMBER_GROUP_PATH +group_name +"/" + user_key).set(user.firstname)
+        else
+          this.af.database.object(MEMBER_GROUP_PATH +group_name +"/" + user_key).set(user.email)
       }else
       {
         
