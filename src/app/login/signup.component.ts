@@ -4,7 +4,9 @@ import { LOGIN } from "../config/login"
 import { GOOGLE_CAPTHA_KEY} from '../config/captcha'
 import { AngularFire, FirebaseObjectObservable, FirebaseAuth } from 'angularfire2';
 import { LoginService } from '../login.service'
-
+import { EmailObject } from "../model/email-object"
+import { EMAIL_TEMPLATES } from "../config/system"
+import { NotificationsService } from "../notifications.service"
 @Component({
   
   selector: 'signup-box',
@@ -61,7 +63,7 @@ export class SignupComponent implements OnInit {
   private key:string = GOOGLE_CAPTHA_KEY;
   private reasons:Array<string>;
   private robotMsg:string;
-  constructor(private af:AngularFire, private auth:FirebaseAuth,  private router: Router, private loginService:LoginService) {
+  constructor(private af:AngularFire, private auth:FirebaseAuth,  private router: Router, private loginService:LoginService, private ns:NotificationsService) {
       this.reasons = [];
      this.robotMsg = LOGIN.MESSAGE_PLEASE_VERITY
    }
@@ -73,7 +75,7 @@ export class SignupComponent implements OnInit {
         this.loginService.refreshPromise().then( (data)=>{
           console.log('before naviate')
           console.log(data)
-          this.router.navigate(["/profile/update"])
+        //  this.router.navigate(["/profile/update"])
         })
         
       }
@@ -102,6 +104,13 @@ export class SignupComponent implements OnInit {
 
   signup(){
     if(this.save()){
+      let eo = new EmailObject(this.email, LOGIN.EMAIL_SUBJECT, {
+        user: this.email,
+        password: this.password
+      }, EMAIL_TEMPLATES.REGISTRATION_COMPLETE )
+
+      this.ns.sendEmail(eo)
+      //this.ns.sendEmail()
       alert(LOGIN.MESSAGE_REGISTRATION_COMPLETE)
       
     }else

@@ -5,6 +5,10 @@ import { Observable }     from 'rxjs/Observable'
 import { PromiseUser } from "./model/promise-user"
 import { Notifications } from "./model/notifications"
 import { Notification } from "./model/notification"
+import { EmailObject } from "./model/email-object"
+import { EMAIL_SERVER } from "./config/system"
+import 'rxjs/add/operator/map';
+import { Http, RequestOptions, Headers, Response }    from '@angular/http';
 
 const ROOT_PATH ="notifications/"
 const COURSE_PATH = "courses/"
@@ -16,7 +20,7 @@ export class NotificationsService {
   
   private notifications:FirebaseObjectObservable<any>
   
-  constructor(private af:AngularFire, private lg:LoginService) { 
+  constructor(private af:AngularFire, private lg:LoginService, private http:Http) { 
       this.notifications = new FirebaseObjectObservable<any>();
       this.lg.promiseUser.then(promise_user =>{
            this.notifications = promise_user.notifications;
@@ -52,6 +56,18 @@ export class NotificationsService {
       //console.log("read:"+ ROOT_PATH + this.user_key + "/" +  notification_key)
       return this.af.database.object(ROOT_PATH + this.user_key + "/" +  notification_key).remove()
   }
+
+  private  readEmailResponse(res:Response){
+        let body = res.json();
+        return body || { } 
+    }
+
+    sendEmail(obj:EmailObject){
+        let reqOptions = new RequestOptions({
+            headers: new Headers({ 'Content-Type': 'application/json' })
+        })
+        return this.http.post(EMAIL_SERVER, obj.toData(), reqOptions).map(this.readEmailResponse)
+    }
 
 
 
