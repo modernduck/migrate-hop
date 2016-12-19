@@ -1,5 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+#config file
+/src/node-server/config.js
+
+
+
 # compiled output
 /dist
 /tmp
